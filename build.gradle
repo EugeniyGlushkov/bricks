@@ -1,2 +1,48 @@
+plugins {
+    //Java project
+    id 'java'
+    //support IDE
+    id 'idea'
+    //чтобы управлять зависимостями
+    id 'io.spring.dependency-management' version '1.1.2'
+    //чтобы собирать uber (толстый) jar-ник
+    id 'com.github.johnrengelman.shadow' version '7.0.0'
+    //id 'org.springframework.boot' version '2.6.9'
+}
+
 group = 'ru.bricks'
 version = '1.0-SNAPSHOT'
+
+sourceCompatibility = JavaVersion.VERSION_15
+targetCompatibility = JavaVersion.VERSION_15
+
+idea {
+    project {
+        languageLevel = 15
+    }
+    module {
+        downloadJavadoc = true
+        downloadSources = true
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencyManagement {
+    imports {
+        mavenBom 'org.springframework.boot:spring-boot-dependencies:2.5.4'
+    }
+}
+
+//numbers of versions
+def logbackVersion = '1.4.9'
+def slf4jVersion = '2.0.7'
+
+dependencies {
+    implementation "ch.qos.logback:logback-classic:$logbackVersion"
+    implementation "ch.qos.logback:logback-core:$logbackVersion"
+    implementation "org.slf4j:slf4j-api:$slf4jVersion"
+    implementation "org.slf4j:slf4j-simple:$slf4jVersion"
+}
