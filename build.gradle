@@ -8,6 +8,8 @@ plugins {
     //чтобы собирать uber (толстый) jar-ник
     id 'com.github.johnrengelman.shadow' version '7.0.0'
     //id 'org.springframework.boot' version '2.6.9'
+    id 'groovy'
+    id 'war'
 }
 
 group = 'ru.bricks'
@@ -37,12 +39,18 @@ dependencyManagement {
 }
 
 //numbers of versions
-def logbackVersion = '1.4.9'
-def slf4jVersion = '2.0.7'
+ext {
+    logbackVersion = '1.4.9'
+    slf4jVersion = '2.0.7'
+    springBootVersion = '2.3.9.RELEASE'
+}
 
 dependencies {
-    implementation "ch.qos.logback:logback-classic:$logbackVersion"
-    implementation "ch.qos.logback:logback-core:$logbackVersion"
-    implementation "org.slf4j:slf4j-api:$slf4jVersion"
-    implementation "org.slf4j:slf4j-simple:$slf4jVersion"
+    //logging
+    //implementation group: 'ch.qos.logback', name: 'logback-classic', version: logbackVersion
+    //implementation group: 'ch.qos.logback', name: 'logback-core', version: logbackVersion
+    //implementation group: 'org.slf4j', name : 'slf4j-api', version: slf4jVersion
+    //implementation group: 'org.slf4j', name: 'slf4j-simple', version: slf4jVersion
+    implementation group: 'org.codehaus.groovy', name: 'groovy', version: '2.4.15'
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-batch', version: springBootVersion
 }
