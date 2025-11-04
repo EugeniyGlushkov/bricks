@@ -1,2 +1,2 @@
 # bricks
-lego bricks project
+Lego bricks project.
