@@ -4,12 +4,16 @@ plugins {
     //support IDE
     id 'idea'
     //чтобы управлять зависимостями
-    id 'io.spring.dependency-management' version '1.1.2'
+    id 'io.spring.dependency-management' version '1.1.7'
     //чтобы собирать uber (толстый) jar-ник
     id 'com.github.johnrengelman.shadow' version '7.0.0'
     //id 'org.springframework.boot' version '2.6.9'
     id 'groovy'
     id 'war'
+}
+
+compileJava {
+    options.annotationProcessorPath = configurations.annotationProcessor
 }
 
 group = 'ru.bricks'
@@ -34,7 +38,7 @@ repositories {
 
 dependencyManagement {
     imports {
-        mavenBom 'org.springframework.boot:spring-boot-dependencies:2.5.4'
+        mavenBom 'org.springframework.boot:spring-boot-dependencies:3.5.7'
     }
 }
 
@@ -42,7 +46,7 @@ dependencyManagement {
 ext {
     logbackVersion = '1.4.9'
     slf4jVersion = '2.0.7'
-    springBootVersion = '2.3.9.RELEASE'
+    springBootVersion = '3.5.7'
 }
 
 dependencies {
@@ -52,5 +56,25 @@ dependencies {
     //implementation group: 'org.slf4j', name : 'slf4j-api', version: slf4jVersion
     //implementation group: 'org.slf4j', name: 'slf4j-simple', version: slf4jVersion
     implementation group: 'org.codehaus.groovy', name: 'groovy', version: '2.4.15'
-    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-batch', version: springBootVersion
+    implementation "org.springframework.boot:spring-boot-starter-batch"
+    implementation "org.springframework.boot:spring-boot-starter-web"
+    implementation 'org.springframework.boot:spring-boot-actuator'
+    implementation 'org.springframework.boot:spring-boot-actuator-autoconfigure'
+    implementation "org.springframework.boot:spring-boot-starter-data-jpa"
+    implementation "org.springframework.boot:spring-boot-starter-test"
+    implementation "com.google.guava:guava:12.0"
+    compileOnly 'org.projectlombok:lombok:1.18.30'
+    implementation 'junit:junit'
+    implementation 'org.mockito:mockito-core'
+    implementation 'org.springframework:spring-test'
+    implementation 'javax.persistence:javax.persistence-api:2.2'
+    runtimeOnly("org.postgresql:postgresql")
+    annotationProcessor(
+            "org.springframework.boot:spring-boot-starter-data-jpa",
+            //"com.querydsl:querydsl-apt:5.0.0:jpa",
+            "javax.annotation:javax.annotation-api:1.3.2",
+            "org.projectlombok:lombok:1.18.30"
+    )
 }
+
+apply plugin: 'java-library'
