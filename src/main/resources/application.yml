@@ -1,3 +1,7 @@
+app:
+  images:
+    path: D:\lego\images
+
 spring:
   datasource:
     driverClassName: org.postgresql.Driver
@@ -8,4 +12,4 @@ spring:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     show-sql: false
     hibernate:
-      ddl-auto: create
+      ddl-auto: none
