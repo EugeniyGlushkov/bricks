@@ -10,7 +10,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 import ru.briks.dao.MinifigsDao;
 import ru.briks.entity.Minifig;
 import ru.briks.service.ImgService;
+import ru.briks.service.InventoryPartService;
 import ru.briks.service.MinifigService;
+import ru.briks.service.SetsService;
 
 @SpringBootTest
 //@ContextConfiguration
@@ -21,6 +23,10 @@ public class DbOperations {
     @Autowired
     private MinifigService minifigService;
     @Autowired
+    private SetsService setsService;
+    @Autowired
+    private InventoryPartService inventoryPartService;
+    @Autowired
     private ImgService imgService;
     @Autowired
     private MinifigsDao minifigsDao;
@@ -30,14 +36,26 @@ public class DbOperations {
 
     @Test
     @SneakyThrows
-    public void downloadImages()  {
+    public void downloadMinifigImages()  {
         minifigService.parseImages(basePath);
+    }
+
+    @Test
+    @SneakyThrows
+    public void downloadSetsImages()  {
+        setsService.parseImages(basePath);
+    }
+
+    @Test
+    @SneakyThrows
+    public void downloadInvPartsImages()  {
+        inventoryPartService.parseImages(basePath);
     }
 
     @Test
     @SneakyThrows
     public void downloadImageById()  {
         Minifig minifig = minifigsDao.findById(12155L).get();
-        imgService.downloadImg(basePath, minifig);
+        imgService.downloadImg(basePath, minifig.getOuterImgUrl());
     }
 }
