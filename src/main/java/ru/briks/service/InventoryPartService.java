@@ -11,6 +11,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
+/**
+ * @author EGlushkov
+ * Date: 11.01.2026
+ * Time: 20:41
+ */
+
 @Slf4j
 @Service
 public class InventoryPartService {
@@ -21,12 +27,13 @@ public class InventoryPartService {
     private InventoryPartsDao inventoryPartsDao;
 
     public void parseImages(String basePath) {
-        int totalPages = inventoryPartsDao.findAll(PageRequest.of(0, 10)).getTotalPages();
+        int totalPages = inventoryPartsDao.findAllWithoutImg(PageRequest.of(0, 10)).getTotalPages();
         log.info("Total pages: {}", totalPages);
         List<CompletableFuture<Void>> futures = new ArrayList<>();
 
         //должно быть с 0, но т.к. затопорилось на 60170 поднял старт сканирования
-        for (int i = 114630; i < totalPages ; i++) {
+        //for (int i = 0; i < totalPages ; i++) {
+        for (int i = 0; i < 500 ; i++) {
             int finalI = i;
             futures.add(CompletableFuture.runAsync(() -> {
                                 try {

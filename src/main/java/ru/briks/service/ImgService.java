@@ -25,6 +25,12 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 
+/**
+ * @author EGlushkov
+ * Date: 11.01.2026
+ * Time: 20:41
+ */
+
 @Slf4j
 @Service
 public class ImgService {
@@ -80,7 +86,7 @@ public class ImgService {
 
     @Transactional
     public boolean downloadInventoryPartImgBatch(int batchNum, String basePath) throws IOException {
-        Page<InventoryPart> setsPage = inventoryPartsDao.findAll(PageRequest.of(batchNum, 10));
+        Page<InventoryPart> setsPage = inventoryPartsDao.findAllWithoutImg(PageRequest.of(batchNum, 10));
         log.info("Batch is: %d".formatted(batchNum));
 
         if (setsPage.getSize() == 0) {

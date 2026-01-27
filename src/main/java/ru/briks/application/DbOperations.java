@@ -7,12 +7,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import ru.briks.dao.InventoryPartsDao;
 import ru.briks.dao.MinifigsDao;
-import ru.briks.entity.Minifig;
+import ru.briks.entity.InventoryPart;
 import ru.briks.service.ImgService;
 import ru.briks.service.InventoryPartService;
 import ru.briks.service.MinifigService;
 import ru.briks.service.SetsService;
+
+/**
+ * @author EGlushkov
+ * Date: 11.01.2026
+ * Time: 20:41
+ */
 
 @SpringBootTest
 //@ContextConfiguration
@@ -30,6 +37,8 @@ public class DbOperations {
     private ImgService imgService;
     @Autowired
     private MinifigsDao minifigsDao;
+    @Autowired
+    private InventoryPartsDao inventoryPartsDao;
 
     @Value("${app.images.path:D:\\lego\\images}")
     private String basePath;
@@ -55,7 +64,7 @@ public class DbOperations {
     @Test
     @SneakyThrows
     public void downloadImageById()  {
-        Minifig minifig = minifigsDao.findById(12155L).get();
-        imgService.downloadImg(basePath, minifig.getOuterImgUrl());
+        InventoryPart invP = inventoryPartsDao.findById(99108L).get();
+        imgService.downloadImg(basePath, invP.getOuterImgUrl());
     }
 }

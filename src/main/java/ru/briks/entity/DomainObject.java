@@ -9,6 +9,12 @@ import lombok.experimental.Accessors;
 import org.springframework.data.domain.Persistable;
 
 
+/**
+ * @author EGlushkov
+ * Date: 11.01.2026
+ * Time: 20:41
+ */
+
 @Getter
 @Setter
 @Accessors(chain = true)

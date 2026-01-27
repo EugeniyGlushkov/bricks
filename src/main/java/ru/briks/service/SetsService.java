@@ -11,6 +11,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
+/**
+ * @author EGlushkov
+ * Date: 11.01.2026
+ * Time: 20:41
+ */
+
 @Slf4j
 @Service
 public class SetsService {

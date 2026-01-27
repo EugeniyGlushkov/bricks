@@ -9,6 +9,12 @@ import ru.briks.entity.Minifig;
 
 import java.io.IOException;
 
+/**
+ * @author EGlushkov
+ * Date: 11.01.2026
+ * Time: 20:41
+ */
+
 @Slf4j
 @Service
 public class MinifigService {

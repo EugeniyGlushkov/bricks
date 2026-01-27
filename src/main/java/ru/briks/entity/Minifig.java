@@ -7,6 +7,12 @@ import lombok.*;
 import lombok.experimental.Accessors;
 
 
+/**
+ * @author EGlushkov
+ * Date: 11.01.2026
+ * Time: 20:41
+ */
+
 @Getter
 @Setter
 @Accessors(chain=true)
