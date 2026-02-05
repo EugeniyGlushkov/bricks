@@ -1,8 +1,9 @@
 package ru.briks.dao;
 
+import jakarta.persistence.EntityManager;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.repository.CrudRepository;
+import ru.briks.entity.QSet;
 import ru.briks.entity.Set;
 
 /**
@@ -11,6 +12,18 @@ import ru.briks.entity.Set;
  * Time: 20:41
  */
 
-public interface SetsDao extends CrudRepository<Set,Long> {
-    Page<Set> findAll(Pageable pageable);
+public class SetsDao extends AbstractDao<Set,Long> {
+    private static final QSet meta;
+
+    static {
+        meta = QSet.set;
+    }
+
+    public SetsDao(EntityManager em) {
+        super(Set.class, em);
+    }
+
+    public Page<Set> findAllWithoutImg(Pageable pageable) {
+        return findAll(meta.imgPath.isNull(), pageable);
+    }
 }

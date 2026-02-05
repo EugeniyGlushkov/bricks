@@ -31,7 +31,7 @@ public class InventoryPartService {
         log.info("Total pages: {}", totalPages);
         List<CompletableFuture<Void>> futures = new ArrayList<>();
 
-        for (int i = 0; i < totalPages ; i++) {
+        for (int i = 0; i < totalPages; i++) {
             int finalI = i;
             futures.add(CompletableFuture.runAsync(() -> {
                                 try {

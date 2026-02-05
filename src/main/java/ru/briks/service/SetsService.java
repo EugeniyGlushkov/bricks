@@ -27,10 +27,10 @@ public class SetsService {
     private SetsDao setsDao;
 
     public void parseImages(String basePath) {
-        int totalPages = setsDao.findAll(PageRequest.of(0, 10)).getTotalPages();
+        int totalPages = setsDao.findAllWithoutImg(PageRequest.of(0, 10)).getTotalPages();
         List<CompletableFuture<Void>> futures = new ArrayList<>();
 
-        for (int i = 0; i < totalPages ; i++) {
+        for (int i = 0; i < totalPages; i++) {
             int finalI = i;
             futures.add(CompletableFuture.runAsync(() -> {
                                 try {
