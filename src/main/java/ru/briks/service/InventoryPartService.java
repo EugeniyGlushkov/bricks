@@ -31,9 +31,7 @@ public class InventoryPartService {
         log.info("Total pages: {}", totalPages);
         List<CompletableFuture<Void>> futures = new ArrayList<>();
 
-        //должно быть с 0, но т.к. затопорилось на 60170 поднял старт сканирования
-        //for (int i = 0; i < totalPages ; i++) {
-        for (int i = 0; i < 500 ; i++) {
+        for (int i = 0; i < totalPages ; i++) {
             int finalI = i;
             futures.add(CompletableFuture.runAsync(() -> {
                                 try {

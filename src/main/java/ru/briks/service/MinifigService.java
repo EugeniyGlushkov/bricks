@@ -3,11 +3,15 @@ package ru.briks.service;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import ru.briks.dao.MinifigsDao;
 import ru.briks.entity.Minifig;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * @author EGlushkov
@@ -25,13 +29,26 @@ public class MinifigService {
     private ImgService imgService;
 
     public void parseImages(String basePath) throws IOException {
-        for (int i = 0; ; i++) {
-            boolean end = imgService.downloadMinifigImgBatch(i, basePath);
+        int totalPages = minifigsDao.findAllWithoutImg(PageRequest.of(0, 10)).getTotalPages();
+        log.info("Total pages: {}", totalPages);
+        List<CompletableFuture<Void>> futures = new ArrayList<>();
 
-            if (end) {
-                break;
-            }
+        for (int i = 0; i < totalPages ; i++) {
+            int finalI = i;
+            futures.add(CompletableFuture.runAsync(() -> {
+                                try {
+                                    imgService.downloadMinifigImgBatch(finalI, basePath);
+                                } catch (IOException e) {
+                                    throw new RuntimeException(e);
+                                }
+                            }
+                    )
+            );
         }
+
+        CompletableFuture<Void> finalFuture =  CompletableFuture.allOf(futures.toArray(new CompletableFuture[0]));
+        finalFuture.join();
+        log.info("Downloading sets images is finished");
     }
 
     public Minifig getMinifig(Long id) {
