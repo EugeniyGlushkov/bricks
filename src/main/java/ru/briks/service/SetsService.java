@@ -34,7 +34,7 @@ public class SetsService {
             int finalI = i;
             futures.add(CompletableFuture.runAsync(() -> {
                                 try {
-                                    imgService.downloadSetImgBatch(finalI, basePath);
+                                    imgService.downloadSetImgBatch(finalI, basePath, totalPages);
                                 } catch (IOException e) {
                                     throw new RuntimeException(e);
                                 }

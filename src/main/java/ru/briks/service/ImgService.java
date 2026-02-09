@@ -43,9 +43,9 @@ public class ImgService {
     private InventoryPartsDao inventoryPartsDao;
 
     @Transactional
-    public boolean downloadMinifigImgBatch(int batchNum, String basePath) throws IOException {
-        Page<Minifig> minifigPage = minifigsDao.findAll(PageRequest.of(batchNum, 10));
-        log.info("Batch is: %d".formatted(batchNum));
+    public boolean downloadMinifigImgBatch(int batchNum, String basePath, int totalPages) throws IOException {
+        Page<Minifig> minifigPage = minifigsDao.findAllWithoutImg(PageRequest.of(batchNum, 10));
+        log.info("Batch is: %d from %d".formatted(batchNum, totalPages));
 
         if (minifigPage.getSize() == 0) {
             return true;
@@ -54,7 +54,7 @@ public class ImgService {
         for (Minifig minifig : minifigPage.getContent()) {
             String relFileName = downloadImg(basePath, minifig.getOuterImgUrl());
 
-            if (!relFileName.isBlank()) {
+            if (StringUtils.hasText(relFileName)) {
                 minifig.setImgPath(relFileName);
                 minifigsDao.save(minifig);
             }
@@ -64,9 +64,9 @@ public class ImgService {
     }
 
     @Transactional
-    public boolean downloadSetImgBatch(int batchNum, String basePath) throws IOException {
-        Page<Set> setsPage = setsDao.findAll(PageRequest.of(batchNum, 10));
-        log.info("Batch is: %d".formatted(batchNum));
+    public boolean downloadSetImgBatch(int batchNum, String basePath, int totalPages) throws IOException {
+        Page<Set> setsPage = setsDao.findAllWithoutImg(PageRequest.of(batchNum, 10));
+        log.info("Batch is: %d from %d".formatted(batchNum, totalPages));
 
         if (setsPage.getSize() == 0) {
             return true;
@@ -85,9 +85,9 @@ public class ImgService {
     }
 
     @Transactional
-    public boolean downloadInventoryPartImgBatch(int batchNum, String basePath) throws IOException {
+    public boolean downloadInventoryPartImgBatch(int batchNum, String basePath, int totalPages) throws IOException {
         Page<InventoryPart> setsPage = inventoryPartsDao.findAllWithoutImg(PageRequest.of(batchNum, 10));
-        log.info("Batch is: %d".formatted(batchNum));
+        log.info("Batch is: %d from %d".formatted(batchNum, totalPages));
 
         if (setsPage.getSize() == 0) {
             return true;

@@ -32,10 +32,11 @@ public class InventoryPartService {
         List<CompletableFuture<Void>> futures = new ArrayList<>();
 
         for (int i = 0; i < totalPages; i++) {
+        //for (int i = 0; i < 2000; i++) {
             int finalI = i;
             futures.add(CompletableFuture.runAsync(() -> {
                                 try {
-                                    imgService.downloadInventoryPartImgBatch(finalI, basePath);
+                                    imgService.downloadInventoryPartImgBatch(finalI, basePath, totalPages);
                                 } catch (IOException e) {
                                     throw new RuntimeException(e);
                                 }

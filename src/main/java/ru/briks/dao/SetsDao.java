@@ -3,6 +3,7 @@ package ru.briks.dao;
 import jakarta.persistence.EntityManager;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Repository;
 import ru.briks.entity.QSet;
 import ru.briks.entity.Set;
 
@@ -12,6 +13,7 @@ import ru.briks.entity.Set;
  * Time: 20:41
  */
 
+@Repository
 public class SetsDao extends AbstractDao<Set,Long> {
     private static final QSet meta;
 
@@ -24,6 +26,6 @@ public class SetsDao extends AbstractDao<Set,Long> {
     }
 
     public Page<Set> findAllWithoutImg(Pageable pageable) {
-        return findAll(meta.imgPath.isNull(), pageable);
+        return findAll(meta.imgPath.isNull().and(meta.outerImgUrl.isNotEmpty()), pageable);
     }
 }

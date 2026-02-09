@@ -26,6 +26,6 @@ public class MinifigsDao extends AbstractDao<Minifig,Long> {
     }
 
     public Page<Minifig> findAllWithoutImg(Pageable pageable) {
-        return findAll(meta.imgPath.isNull(), pageable);
+        return findAll(meta.imgPath.isNull().and(meta.outerImgUrl.isNotEmpty()), pageable);
     }
 }

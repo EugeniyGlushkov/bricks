@@ -37,7 +37,7 @@ public class MinifigService {
             int finalI = i;
             futures.add(CompletableFuture.runAsync(() -> {
                                 try {
-                                    imgService.downloadMinifigImgBatch(finalI, basePath);
+                                    imgService.downloadMinifigImgBatch(finalI, basePath, totalPages);
                                 } catch (IOException e) {
                                     throw new RuntimeException(e);
                                 }
@@ -51,7 +51,7 @@ public class MinifigService {
         log.info("Downloading sets images is finished");
     }
 
-    public Minifig getMinifig(Long id) {
+    public Minifig getOne(Long id) {
         return minifigsDao.findById(id)
                 .orElseThrow(() ->
                         new EntityNotFoundException("Minifig with id: [%s] is not existed.".formatted(id)));

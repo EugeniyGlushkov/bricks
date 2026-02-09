@@ -26,6 +26,6 @@ public class InventoryPartsDao extends AbstractDao<InventoryPart,Long> {
     }
 
     public Page<InventoryPart> findAllWithoutImg(Pageable pageable) {
-        return findAll(meta.imgPath.isNull(), pageable);
+        return findAll(meta.imgPath.isNull().and(meta.outerImgUrl.isNotEmpty()), pageable);
     }
 }
