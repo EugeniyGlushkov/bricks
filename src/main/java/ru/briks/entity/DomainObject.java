@@ -32,7 +32,7 @@ public abstract class DomainObject extends AbstractEntity<Long> implements Persi
     @Transient
     private boolean isNew = true;
 
-    @PrePersist
+    @PostPersist
     @PostLoad
     void markNotNew() {
         this.isNew = false;
