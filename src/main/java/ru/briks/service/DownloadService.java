@@ -14,9 +14,6 @@ import ru.briks.entity.InventoryPart;
 import ru.briks.entity.Minifig;
 import ru.briks.entity.Set;
 
-import javax.imageio.IIOException;
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -33,7 +30,7 @@ import java.nio.file.StandardCopyOption;
 
 @Slf4j
 @Service
-public class ImgService {
+public class DownloadService {
 
     @Autowired
     private MinifigsDao minifigsDao;
@@ -103,57 +100,6 @@ public class ImgService {
         }
 
         return false;
-    }
-
-    @Transactional
-    public String downloadImg1(String basePath, String imgUrl) throws IOException {
-
-        if (imgUrl == null) {
-            return null;
-        }
-
-        String path = imgUrl.replace("https://", "").replace("http://", "");
-        String[] imgUrlArr = path.split("/");
-        StringBuilder relFileName = new StringBuilder();
-
-        for (int j = 1; j < imgUrlArr.length; j++) {
-            relFileName.append("\\")
-                    .append(imgUrlArr[j]);
-        }
-
-        String fileName = basePath + relFileName;
-        File file = new File(fileName);
-
-        if (!file.getParentFile().exists()) {
-            file.getParentFile().mkdirs();
-        }
-
-        if (file.exists()) {
-            file.delete();
-        }
-
-        file.createNewFile();
-        BufferedImage img;
-
-        try {
-            img = ImageIO.read(new URL(imgUrl));
-        } catch (IIOException ex) {
-            log.error("File Not Found: %s".formatted(imgUrl), ex);
-            file.delete();
-            return null;
-        }
-
-        if (img == null) {
-            return null;
-        }
-
-        if (imgUrl.contains("/03-1")) {
-            System.out.println("its");
-        }
-
-        String format = imgUrlArr[imgUrlArr.length - 1].split("\\.")[1];
-        ImageIO.write(img, format, file);
-        return relFileName.toString();
     }
 
     @Transactional

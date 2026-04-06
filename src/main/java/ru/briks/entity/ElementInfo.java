@@ -3,6 +3,7 @@ package ru.briks.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.Accessors;
+import org.hibernate.annotations.CurrentTimestamp;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -15,6 +16,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @Setter
+@Builder
 @Accessors(chain=true)
 @Entity
 @ToString(callSuper = true, onlyExplicitlyIncluded = true)
@@ -25,7 +27,13 @@ public class ElementInfo extends DomainObject {
     @NonNull
     @ToString.Include
     @EqualsAndHashCode.Include
-    private Long partId;
+    private Long elementId;
+
+    @Column(name = "state")
+    @ToString.Include
+    @EqualsAndHashCode.Include
+    @Enumerated(EnumType.STRING)
+    private State state;
 
     @Column(name = "count")
     @ToString.Include
@@ -43,6 +51,7 @@ public class ElementInfo extends DomainObject {
     private BigDecimal priceKuboka;
 
     @Column(name = "created")
+    @CurrentTimestamp
     private LocalDateTime created;
 
     @Column(name = "updated")

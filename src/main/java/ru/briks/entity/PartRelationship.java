@@ -1,8 +1,6 @@
 package ru.briks.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -27,6 +25,7 @@ public class PartRelationship extends DomainObject {
     @Column(name = "rel_type")
     @ToString.Include
     @EqualsAndHashCode.Include
+    @Enumerated(EnumType.STRING)
     private PartRelationType relationType;
 
     @Column(name = "child_part_id")

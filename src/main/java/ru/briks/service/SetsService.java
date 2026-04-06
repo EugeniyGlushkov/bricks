@@ -22,7 +22,7 @@ import java.util.concurrent.CompletableFuture;
 public class SetsService {
 
     @Autowired
-    private ImgService imgService;
+    private DownloadService downloadService;
     @Autowired
     private SetsDao setsDao;
 
@@ -34,7 +34,7 @@ public class SetsService {
             int finalI = i;
             futures.add(CompletableFuture.runAsync(() -> {
                                 try {
-                                    imgService.downloadSetImgBatch(finalI, basePath, totalPages);
+                                    downloadService.downloadSetImgBatch(finalI, basePath, totalPages);
                                 } catch (IOException e) {
                                     throw new RuntimeException(e);
                                 }

@@ -26,7 +26,7 @@ public class MinifigService {
     @Autowired
     private MinifigsDao minifigsDao;
     @Autowired
-    private ImgService imgService;
+    private DownloadService downloadService;
 
     public void parseImages(String basePath) throws IOException {
         int totalPages = minifigsDao.findAllWithoutImg(PageRequest.of(0, 10)).getTotalPages();
@@ -37,7 +37,7 @@ public class MinifigService {
             int finalI = i;
             futures.add(CompletableFuture.runAsync(() -> {
                                 try {
-                                    imgService.downloadMinifigImgBatch(finalI, basePath, totalPages);
+                                    downloadService.downloadMinifigImgBatch(finalI, basePath, totalPages);
                                 } catch (IOException e) {
                                     throw new RuntimeException(e);
                                 }

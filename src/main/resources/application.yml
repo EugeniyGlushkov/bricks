@@ -3,6 +3,9 @@ app:
     path: D:\lego\images
 
 spring:
+  config:
+    import:
+      - "classpath:downloadPrices.yml"
   datasource:
     driverClassName: org.postgresql.Driver
     url: jdbc:postgresql://localhost:5432/legodb

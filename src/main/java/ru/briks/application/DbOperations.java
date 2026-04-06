@@ -8,12 +8,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import ru.briks.dao.InventoryPartsDao;
-import ru.briks.dao.MinifigsDao;
 import ru.briks.entity.InventoryPart;
-import ru.briks.service.ImgService;
-import ru.briks.service.InventoryPartService;
-import ru.briks.service.MinifigService;
-import ru.briks.service.SetsService;
+import ru.briks.service.*;
+import ru.briks.service.price.ElementInfoService;
 
 /**
  * @author EGlushkov
@@ -34,11 +31,11 @@ public class DbOperations {
     @Autowired
     private InventoryPartService inventoryPartService;
     @Autowired
-    private ImgService imgService;
-    @Autowired
-    private MinifigsDao minifigsDao;
+    private DownloadService downloadService;
     @Autowired
     private InventoryPartsDao inventoryPartsDao;
+    @Autowired
+    private ElementInfoService elementInfoService;
 
     @Value("${app.images.path:D:\\lego\\images}")
     private String basePath;
@@ -65,6 +62,14 @@ public class DbOperations {
     @SneakyThrows
     public void downloadImageById()  {
         InventoryPart invP = inventoryPartsDao.findById(99108L).get();
-        imgService.downloadImg(basePath, invP.getOuterImgUrl());
+        downloadService.downloadImg(basePath, invP.getOuterImgUrl());
+    }
+
+    //move to other service
+    @Test
+    @SneakyThrows
+    public void downloadPrices()  {
+        elementInfoService.downloadPrices();
+        System.out.println();
     }
 }

@@ -1,0 +1,36 @@
+package ru.briks.dao;
+
+import jakarta.persistence.EntityManager;
+import org.springframework.stereotype.Repository;
+import ru.briks.entity.ElementInfo;
+import ru.briks.entity.QElementInfo;
+import ru.briks.entity.State;
+
+import java.util.Optional;
+
+/**
+ * @author EGlushkov
+ * Date: 31.03.2026
+ * Time: 16:46
+ */
+
+@Repository
+public class ElementInfoDao extends AbstractDao<ElementInfo, Long> {
+    private static final QElementInfo meta;
+
+    static {
+        meta = QElementInfo.elementInfo;
+    }
+
+    public ElementInfoDao(EntityManager em) {
+        super(ElementInfo.class, em);
+    }
+
+    public Optional<ElementInfo> findByElementIdAndState(Long elementId, State state) {
+        return Optional.ofNullable(query()
+                .from(meta)
+                .select(meta)
+                .where(meta.elementId.eq(elementId).and(meta.state.eq(state)))
+                .fetchFirst());
+    }
+}

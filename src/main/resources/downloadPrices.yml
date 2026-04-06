@@ -1,0 +1,8 @@
+urls:
+  details: "https://kuboteka.shop/index.php?route=product/product/productsvariantof"
+
+download:
+  variants:
+    bricks:
+      - variantOf: 2357 # Brick 2 x 2 Corner
+        variantType: BASIS_REAL
