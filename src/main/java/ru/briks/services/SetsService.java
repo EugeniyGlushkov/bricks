@@ -1,10 +1,10 @@
-package ru.briks.service;
+package ru.briks.services;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-import ru.briks.dao.InventoryPartsDao;
+import ru.briks.dao.SetsDao;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -19,24 +19,22 @@ import java.util.concurrent.CompletableFuture;
 
 @Slf4j
 @Service
-public class InventoryPartService {
+public class SetsService {
 
     @Autowired
     private DownloadService downloadService;
     @Autowired
-    private InventoryPartsDao inventoryPartsDao;
+    private SetsDao setsDao;
 
     public void parseImages(String basePath) {
-        int totalPages = inventoryPartsDao.findAllWithoutImg(PageRequest.of(0, 10)).getTotalPages();
-        log.info("Total pages: {}", totalPages);
+        int totalPages = setsDao.findAllWithoutImg(PageRequest.of(0, 10)).getTotalPages();
         List<CompletableFuture<Void>> futures = new ArrayList<>();
 
-        //for (int i = 0; i < totalPages; i++) {
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < totalPages; i++) {
             int finalI = i;
             futures.add(CompletableFuture.runAsync(() -> {
                                 try {
-                                    downloadService.downloadInventoryPartImgBatch(finalI, basePath, totalPages);
+                                    downloadService.downloadSetImgBatch(finalI, basePath, totalPages);
                                 } catch (IOException e) {
                                     throw new RuntimeException(e);
                                 }
@@ -47,6 +45,6 @@ public class InventoryPartService {
 
         CompletableFuture<Void> finalFuture =  CompletableFuture.allOf(futures.toArray(new CompletableFuture[0]));
         finalFuture.join();
-        log.info("Downloading sets images is finished");
+        System.out.println("Downloading sets images is finished");
     }
 }

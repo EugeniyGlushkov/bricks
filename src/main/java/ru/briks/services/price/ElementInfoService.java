@@ -1,4 +1,4 @@
-package ru.briks.service.price;
+package ru.briks.services.price;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +11,7 @@ import ru.briks.dto.VariantDto;
 import ru.briks.entity.Element;
 import ru.briks.entity.ElementInfo;
 import ru.briks.entity.State;
-import ru.briks.service.web.WebDataService;
+import ru.briks.services.web.WebDataService;
 import ru.briks.settings.VariantsSettings;
 
 import java.math.BigDecimal;

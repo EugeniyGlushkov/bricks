@@ -1,4 +1,4 @@
-package ru.briks.service;
+package ru.briks.services;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;

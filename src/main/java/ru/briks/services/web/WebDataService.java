@@ -1,4 +1,4 @@
-package ru.briks.service.web;
+package ru.briks.services.web;
 
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;

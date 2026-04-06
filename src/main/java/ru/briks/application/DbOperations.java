@@ -9,8 +9,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import ru.briks.dao.InventoryPartsDao;
 import ru.briks.entity.InventoryPart;
-import ru.briks.service.*;
-import ru.briks.service.price.ElementInfoService;
+import ru.briks.services.*;
+import ru.briks.services.price.ElementInfoService;
 
 /**
  * @author EGlushkov
