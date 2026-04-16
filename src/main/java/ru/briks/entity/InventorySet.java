@@ -29,10 +29,10 @@ public class InventorySet extends DomainObject {
     @EqualsAndHashCode.Include
     private Long inventoryId;
 
-    @Column(name = "set_num")
+    @Column(name = "set_id")
     @ToString.Include
     @EqualsAndHashCode.Include
-    private String setNum;
+    private Long setId;
 
     @ToString.Include
     @EqualsAndHashCode.Include

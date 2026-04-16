@@ -29,10 +29,10 @@ public class InventoryMinifig extends DomainObject {
     @EqualsAndHashCode.Include
     private Long inventoryId;
 
-    @Column(name = "fig_num")
+    @Column(name = "minifig_id")
     @ToString.Include
     @EqualsAndHashCode.Include
-    private String figNum;
+    private Long minifigId;
 
     @ToString.Include
     @EqualsAndHashCode.Include

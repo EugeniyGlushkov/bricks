@@ -32,6 +32,7 @@ public class Part extends DomainObject {
     @ManyToOne(fetch = FetchType.LAZY)
     @ToString.Include
     @EqualsAndHashCode.Include
+    @JoinColumn(name = "part_cat_id")
     private PartCategory partCategory;
 
     @Column(name = "part_material")

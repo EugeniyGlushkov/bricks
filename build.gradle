@@ -6,8 +6,8 @@ plugins {
     //чтобы управлять зависимостями
     id 'io.spring.dependency-management' version '1.1.7'
     //чтобы собирать uber (толстый) jar-ник
-    id 'com.github.johnrengelman.shadow' version '7.0.0'
-    //id 'org.springframework.boot' version '2.6.9'
+    //id 'com.github.johnrengelman.shadow' version '7.0.0'
+    id 'org.springframework.boot' version '3.2.5'
     id 'groovy'
     id 'war'
 }
@@ -16,8 +16,8 @@ compileJava {
     options.annotationProcessorPath = configurations.annotationProcessor
 }
 
-group = 'ru.bricks'
-version = '1.0-SNAPSHOT'
+group = projectGroup
+version = projectVersion
 
 sourceCompatibility = JavaVersion.VERSION_21
 targetCompatibility = JavaVersion.VERSION_21
@@ -38,15 +38,21 @@ repositories {
 
 dependencyManagement {
     imports {
-        mavenBom 'org.springframework.boot:spring-boot-dependencies:3.5.7'
+        mavenBom 'org.springframework.boot:spring-boot-dependencies:4.0.5'
     }
 }
 
 //numbers of versions
 ext {
+    groovyVersion = '3.0.25'
     logbackVersion = '1.4.9'
     slf4jVersion = '2.0.7'
-    springBootVersion = '3.5.7'
+    springBootVersion = '4.0.5'
+    guavaVersion = '33.5.0-jre'
+    lombokVersion = '1.18.30'
+    querydslJpaVersion = '5.1.0:jakarta'
+    querydslCoreVersion = '5.1.0'
+    javaxPersistenceVersion = '2.2'
 }
 
 dependencies {
@@ -55,30 +61,46 @@ dependencies {
     //implementation group: 'ch.qos.logback', name: 'logback-core', version: logbackVersion
     //implementation group: 'org.slf4j', name : 'slf4j-api', version: slf4jVersion
     //implementation group: 'org.slf4j', name: 'slf4j-simple', version: slf4jVersion
-    implementation group: 'org.codehaus.groovy', name: 'groovy', version: '2.4.15'
+    implementation "org.codehaus.groovy:groovy:$groovyVersion"
     implementation "org.springframework.boot:spring-boot-starter-batch"
     implementation "org.springframework.boot:spring-boot-starter-web"
+    implementation "org.springframework.boot:spring-boot-starter-thymeleaf"
+    implementation "org.springframework.boot:spring-boot-starter-restclient"
     implementation 'org.springframework.boot:spring-boot-actuator'
     implementation 'org.springframework.boot:spring-boot-actuator-autoconfigure'
     implementation "org.springframework.boot:spring-boot-starter-data-jpa"
     implementation "org.springframework.boot:spring-boot-starter-test"
-    implementation "com.google.guava:guava:12.0"
-    compileOnly 'org.projectlombok:lombok:1.18.30'
+    implementation "org.springframework.boot:spring-boot-starter-security"
+    implementation "org.springframework.boot:spring-boot-starter-validation"
+    implementation "org.springframework.boot:spring-boot-starter-liquibase"
+    implementation "com.google.guava:guava:$guavaVersion"
+    compileOnly "org.projectlombok:lombok:$lombokVersion"
     implementation 'junit:junit'
     implementation 'org.mockito:mockito-core'
     implementation 'org.springframework:spring-test'
-    implementation 'javax.persistence:javax.persistence-api:2.2'
-    implementation 'org.seleniumhq.selenium:selenium-java'
-    implementation 'com.querydsl:querydsl-jpa:5.1.0:jakarta'
-    implementation 'com.querydsl:querydsl-core:5.1.0'
+    implementation "javax.persistence:javax.persistence-api:$javaxPersistenceVersion"
+    //implementation 'org.seleniumhq.selenium:selenium-java'
+    implementation "com.querydsl:querydsl-jpa:$querydslJpaVersion"
+    implementation "com.querydsl:querydsl-core:$querydslCoreVersion"
+    implementation "org.thymeleaf.extras:thymeleaf-extras-springsecurity6"
     runtimeOnly("org.postgresql:postgresql")
     annotationProcessor(
             "org.springframework.boot:spring-boot-starter-data-jpa",
-            //"com.querydsl:querydsl-apt:5.0.0:jpa",
             "javax.annotation:javax.annotation-api:1.3.2",
             "com.querydsl:querydsl-apt:5.1.0:jakarta",
             "org.projectlombok:lombok:1.18.30"
     )
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+tasks.named('test') { useJUnitPlatform() }
+
+sourceSets {
+    main { java.srcDir "$buildDir/generated/sources/annotationProcessor/java/main/" }
+}
+tasks.withType(JavaCompile) {
+    options.annotationProcessorPath = configurations.annotationProcessor
 }
 
 apply plugin: 'java-library'

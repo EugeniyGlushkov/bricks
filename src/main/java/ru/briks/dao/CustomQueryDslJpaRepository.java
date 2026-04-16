@@ -12,6 +12,7 @@ import org.springframework.data.repository.NoRepositoryBean;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author EGlushkov
@@ -20,10 +21,14 @@ import java.util.List;
  */
 
 @NoRepositoryBean
-public interface CustomQueryDslJpaRepository<T, ID extends Serializable> extends JpaRepository<T, ID>, QuerydslPredicateExecutor<T> {
+public interface CustomQueryDslJpaRepository<T, ID extends Serializable>{
     long delete(Predicate predicate);
 
     T findOne(FactoryExpression<T> factoryExpression, Predicate predicate);
+
+    Optional<T> findById(ID id);
+
+    Page<T> findAll(Pageable pageable);
 
     List<T> findAll(FactoryExpression<T> factoryExpression, Predicate predicate);
 
@@ -32,6 +37,10 @@ public interface CustomQueryDslJpaRepository<T, ID extends Serializable> extends
     Page<T> findAll(FactoryExpression<T> factoryExpression, Pageable pageable);
 
     Page<T> findAll(FactoryExpression<T> factoryExpression, Predicate predicate, Pageable pageable);
+
+    <S extends T> S save(S entity);
+
+    <S extends T> List<S> saveAll(Iterable<S> entities);
 
     JPQLQueryFactory query();
 }
