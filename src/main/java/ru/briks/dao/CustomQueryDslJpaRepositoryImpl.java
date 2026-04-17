@@ -15,14 +15,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.support.JpaEntityInformation;
 import org.springframework.data.jpa.repository.support.Querydsl;
 import org.springframework.data.jpa.repository.support.QuerydslJpaPredicateExecutor;
-//import org.springframework.data.jpa.repository.support.QuerydslJpaRepository;
-import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import org.springframework.data.querydsl.EntityPathResolver;
 import org.springframework.data.querydsl.SimpleEntityPathResolver;
 import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.util.Assert;
 
-import javax.persistence.LockModeType;
 import java.io.Serializable;
 import java.util.*;
 
