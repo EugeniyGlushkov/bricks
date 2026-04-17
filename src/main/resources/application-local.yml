@@ -37,6 +37,15 @@ spring:
       password: admin123
       roles: ADMIN
 
+  web:
+    resources:
+      static-locations: classpath:/static/
+      add-mappings: true
+
+  mvc:
+    static-path-pattern: /static/**  # ← Статика только по этому пути
+    throw-exception-if-no-handler-found: true
+
   liquibase:
     enabled: true
     change-log: classpath:db/changelog/db.changelog-master.yaml

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Админка</title>
+</head>
+<body>
+<header>
+    <a th:href="@{/}">Главная</a> |
+    <span sec:authorize="isAuthenticated()">
+            👤 <span sec:authentication="name"></span>
+            <form th:action="@{/logout}" method="post" style="display:inline">
+                <button type="submit">Выйти</button>
+            </form>
+        </span>
+</header>
+<main style="margin-top: 1.5rem;">
+    <h2>Панель администратора</h2>
+    <p>Управление каталогом будет добавлено в Фазе 1.</p>
+</main>
+</body>
+</html>

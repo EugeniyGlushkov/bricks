@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Briks</title>
+    <style>
+        body {
+            font-family: system-ui, sans-serif;
+            margin: 2rem;
+            line-height: 1.5;
+        }
+
+        nav a, nav button {
+            margin-right: 1rem;
+            cursor: pointer;
+        }
+
+        .error {
+            color: #d32f2f;
+            font-size: 0.85rem;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <nav>
+        <a th:href="@{/}">Главная</a>
+        <a th:href="@{/admin}" sec:authorize="hasRole('ADMIN')">Админка</a>
+        <span sec:authorize="isAuthenticated()">
+                👤 <span sec:authentication="name"></span>
+                <form th:action="@{/logout}" method="post" style="display:inline">
+                    <button type="submit">Выйти</button>
+                </form>
+            </span>
+        <span sec:authorize="!isAuthenticated()">
+                <a th:href="@{/login}">Войти</a>
+            </span>
+    </nav>
+</header>
+<main style="margin-top: 1.5rem;">
+    <div th:replace="${pageFragment} :: content">Основной контент</div>
+</main>
+</body>
+</html>

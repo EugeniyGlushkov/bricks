@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Briks</title>
+</head>
+<body>
+<header>
+    <nav>
+        <a href="/">Главная</a>
+        <a th:href="@{/admin}" sec:authorize="hasRole('ADMIN')">Админка</a>
+        <span sec:authorize="isAuthenticated()">
+                👤 <span sec:authentication="name"></span>
+                <form th:action="@{/logout}" method="post" style="display:inline">
+                    <button type="submit">Выйти</button>
+                </form>
+            </span>
+        <span sec:authorize="!isAuthenticated()">
+                <a th:href="@{/login}">Войти</a>
+            </span>
+    </nav>
+</header>
+<main style="margin-top: 1.5rem;">
+    <h1>Добро пожаловать в Briks</h1>
+    <p>Магазин деталей LEGO. Скелет приложения работает.</p>
+</main>
+</body>
+</html>
