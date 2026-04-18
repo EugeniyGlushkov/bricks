@@ -65,7 +65,7 @@ public class ElementInfoService {
                                         elementIdToElements.get(prod.getModel()).getId(),
                                         State.ofCode(prod.getManufacturer()))
                                 .orElse(ElementInfo.builder()
-                                        .elementId(elementIdToElements.get(prod.getModel()).getId())
+                                        .element(elementIdToElements.get(prod.getModel()))
                                         .state(State.ofCode(prod.getManufacturer()))
                                         .build())
                                 .setPriceKuboka(BigDecimal.valueOf(Double.parseDouble(prod.getPrice())))

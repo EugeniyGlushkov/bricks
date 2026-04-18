@@ -1,5 +1,6 @@
 package ru.briks.dao;
 
+import com.querydsl.jpa.JPQLQueryFactory;
 import jakarta.persistence.EntityManager;
 import org.springframework.stereotype.Repository;
 import ru.briks.entity.ElementInfo;
@@ -22,15 +23,15 @@ public class ElementInfoDao extends AbstractDao<ElementInfo, Long> {
         meta = QElementInfo.elementInfo;
     }
 
-    public ElementInfoDao(EntityManager em) {
-        super(ElementInfo.class, em);
+    public ElementInfoDao(EntityManager em, JPQLQueryFactory queryFactory) {
+        super(ElementInfo.class, em, queryFactory);
     }
 
     public Optional<ElementInfo> findByElementIdAndState(Long elementId, State state) {
         return Optional.ofNullable(query()
                 .from(meta)
                 .select(meta)
-                .where(meta.elementId.eq(elementId).and(meta.state.eq(state)))
+                .where(meta.element.id.eq(elementId).and(meta.state.eq(state)))
                 .fetchFirst());
     }
 }

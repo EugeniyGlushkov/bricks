@@ -25,17 +25,12 @@ import lombok.experimental.Accessors;
 public class Color extends DomainObject {
 
     @ToString.Include
-    @EqualsAndHashCode.Include
     private String name;
 
     @ToString.Include
-    @EqualsAndHashCode.Include
     private String rgb;
 
     @Column(name = "is_trans")
     @ToString.Include
-    @EqualsAndHashCode.Include
     private Boolean isTrans;
-
-
 }

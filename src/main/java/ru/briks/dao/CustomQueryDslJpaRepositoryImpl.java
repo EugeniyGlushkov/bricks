@@ -29,7 +29,7 @@ import java.util.*;
  * Time: 20:41
  */
 
-public class CustomQueryDslJpaRepositoryImpl<T, ID extends Serializable>
+public abstract class CustomQueryDslJpaRepositoryImpl<T, ID extends Serializable>
         extends QuerydslJpaPredicateExecutor<T>
         implements CustomQueryDslJpaRepository<T, ID> {
     private static final EntityPathResolver DEFAULT_ENTITY_PATH_RESOLVER = SimpleEntityPathResolver.INSTANCE;
@@ -41,22 +41,24 @@ public class CustomQueryDslJpaRepositoryImpl<T, ID extends Serializable>
     protected final EntityManager em;
     protected final JpaEntityInformation<T, ID> entityInformation;
 
-    @Autowired
     private JPQLQueryFactory query;
 
     public CustomQueryDslJpaRepositoryImpl(JpaEntityInformation<T, ID> entityInformation,
-                                           EntityManager entityManager) {
-        this(entityInformation, entityManager, DEFAULT_ENTITY_PATH_RESOLVER);
+                                           EntityManager entityManager,
+                                           JPQLQueryFactory queryFactory) {
+        this(entityInformation, entityManager, DEFAULT_ENTITY_PATH_RESOLVER, queryFactory);
     }
 
     public CustomQueryDslJpaRepositoryImpl(JpaEntityInformation<T, ID> entityInformation,
                                            EntityManager entityManager,
-                                           EntityPathResolver resolver) {
+                                           EntityPathResolver resolver,
+                                           JPQLQueryFactory queryFactory) {
         super(entityInformation, entityManager, resolver, null);
         this.path = resolver.createPath(entityInformation.getJavaType());
         this.querydsl = new Querydsl(entityManager, new PathBuilder<>(path.getType(), path.getMetadata()));
         this.em = entityManager;
         this.entityInformation = entityInformation;
+        this.query = queryFactory;
     }
 
     @Override
@@ -92,7 +94,6 @@ public class CustomQueryDslJpaRepositoryImpl<T, ID extends Serializable>
 
     @Override
     public List<T> findAll(FactoryExpression<T> factoryExpression, Predicate predicate) {
-        findAll();
         final JPQLQuery<?> queryItems = createQuery(predicate);
         return queryItems.select(factoryExpression).fetch();
     }

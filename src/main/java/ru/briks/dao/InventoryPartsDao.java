@@ -1,5 +1,6 @@
 package ru.briks.dao;
 
+import com.querydsl.jpa.JPQLQueryFactory;
 import jakarta.persistence.EntityManager;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,8 +22,8 @@ public class InventoryPartsDao extends AbstractDao<InventoryPart,Long> {
         meta = QInventoryPart.inventoryPart;
     }
 
-    public InventoryPartsDao(EntityManager em) {
-        super(InventoryPart.class, em);
+    public InventoryPartsDao(EntityManager em, JPQLQueryFactory queryFactory) {
+        super(InventoryPart.class, em, queryFactory);
     }
 
     public Page<InventoryPart> findAllWithoutImg(Pageable pageable) {

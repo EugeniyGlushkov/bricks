@@ -1,8 +1,11 @@
 package ru.briks.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import lombok.experimental.Accessors;
+
+import java.math.BigDecimal;
 
 /**
  * @author EGlushkov
@@ -19,24 +22,30 @@ import lombok.experimental.Accessors;
 @Table(name = "parts")
 public class Part extends DomainObject {
 
-    @NonNull
-    @Column(name = "part_num")
+    @NotNull(message = "Part's num is required")
+    @Column(name = "part_num", nullable = false, unique = true, length = 20)
     @ToString.Include
-    @EqualsAndHashCode.Include
     private String partNum;
 
     @ToString.Include
-    @EqualsAndHashCode.Include
     private String name;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @ToString.Include
-    @EqualsAndHashCode.Include
     @JoinColumn(name = "part_cat_id")
     private PartCategory partCategory;
 
     @Column(name = "part_material")
-    @ToString.Include
-    @EqualsAndHashCode.Include
     private String partMaterial;
+
+    @Column(name = "part_num_bricklink", length = 20)
+    private String partNumBricklink;
+
+    @Column(name = "category_name_bricklink", length = 255)
+    private String categoryNameBricklink;
+
+    @Column(name = "name_bricklink")
+    private String nameBricklink;
+
+    @Column(name = "weight_grams", precision = 7, scale = 2)
+    private BigDecimal weightGrams;
 }

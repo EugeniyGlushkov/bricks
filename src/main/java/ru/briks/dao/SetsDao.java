@@ -1,5 +1,6 @@
 package ru.briks.dao;
 
+import com.querydsl.jpa.JPQLQueryFactory;
 import jakarta.persistence.EntityManager;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,8 +22,8 @@ public class SetsDao extends AbstractDao<Set,Long> {
         meta = QSet.set;
     }
 
-    public SetsDao(EntityManager em) {
-        super(Set.class, em);
+    public SetsDao(EntityManager em, JPQLQueryFactory queryFactory) {
+        super(Set.class, em, queryFactory);
     }
 
     public Page<Set> findAllWithoutImg(Pageable pageable) {

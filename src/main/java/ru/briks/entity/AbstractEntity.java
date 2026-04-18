@@ -1,6 +1,7 @@
 package ru.briks.entity;
 
-import javax.persistence.MappedSuperclass;
+
+import jakarta.persistence.MappedSuperclass;
 
 /**
  * @author EGlushkov

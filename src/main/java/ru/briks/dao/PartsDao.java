@@ -1,5 +1,6 @@
 package ru.briks.dao;
 
+import com.querydsl.jpa.JPQLQueryFactory;
 import jakarta.persistence.EntityManager;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -22,8 +23,8 @@ public class PartsDao extends AbstractDao<Part,Long> {
         meta = QPart.part;
     }
 
-    public PartsDao(EntityManager em) {
-        super(Part.class, em);
+    public PartsDao(EntityManager em, JPQLQueryFactory queryFactory) {
+        super(Part.class, em, queryFactory);
     }
 
     public Page<Part> findAll(int pageNum, int size) {

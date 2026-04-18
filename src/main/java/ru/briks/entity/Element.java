@@ -1,8 +1,7 @@
 package ru.briks.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import lombok.experimental.Accessors;
 
@@ -21,20 +20,17 @@ import lombok.experimental.Accessors;
 @Table(name = "elements")
 public class Element extends DomainObject {
 
-    @Column(name = "element_id")
-    @NonNull
+    @Column(name = "element_id", unique = true, length = 10)
+    @NotNull(message = "Element's id is required")
     @ToString.Include
-    @EqualsAndHashCode.Include
     private String elementId;
 
-    @Column(name = "part_id")
-    @NonNull
-    @ToString.Include
-    @EqualsAndHashCode.Include
-    private Long partId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @NotNull(message = "Part is required")
+    @JoinColumn(name = "part_id", nullable = false)
+    private Part part;
 
-    @Column(name = "color_id")
-    @ToString.Include
-    @EqualsAndHashCode.Include
-    private Long color_id;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "color_id")
+    private Color color;
 }

@@ -1,6 +1,9 @@
 package ru.briks.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import lombok.experimental.Accessors;
 import org.hibernate.annotations.CurrentTimestamp;
@@ -19,35 +22,39 @@ import java.time.LocalDateTime;
 @Builder
 @Accessors(chain=true)
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
 @ToString(callSuper = true, onlyExplicitlyIncluded = true)
 @EqualsAndHashCode(callSuper = true, onlyExplicitlyIncluded = true)
 @Table(name = "element_info")
 public class ElementInfo extends DomainObject {
-    @Column(name = "element_id")
-    @NonNull
-    @ToString.Include
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "element_id", nullable = false)
+    @NotNull(message = "Element is required")
+    @ToString.Include // Чтобы в логах видеть ID элемента
     @EqualsAndHashCode.Include
-    private Long elementId;
+    private Element element;
 
-    @Column(name = "state")
+    @Enumerated(EnumType.STRING)
+    @Column(name = "state", nullable = false, length = 20)
     @ToString.Include
     @EqualsAndHashCode.Include
-    @Enumerated(EnumType.STRING)
+    @NotNull
     private State state;
 
     @Column(name = "count")
+    @Min(value = 0, message = "Количество не может быть отрицательным")
     @ToString.Include
     @EqualsAndHashCode.Include
-    private Integer count;
+    private Long count;
 
-    @Column(name = "price")
+    @Column(name = "price", precision = 10, scale = 2)
+    @DecimalMin(value = "0.01", message = "Цена должна быть > 0")
     @ToString.Include
     @EqualsAndHashCode.Include
     private BigDecimal price;
 
-    @Column(name = "price_kuboka")
-    @ToString.Include
-    @EqualsAndHashCode.Include
+    @Column(name = "price_kuboka", precision = 10, scale = 2)
     private BigDecimal priceKuboka;
 
     @Column(name = "created")

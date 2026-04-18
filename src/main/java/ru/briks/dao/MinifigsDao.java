@@ -1,5 +1,6 @@
 package ru.briks.dao;
 
+import com.querydsl.jpa.JPQLQueryFactory;
 import jakarta.persistence.EntityManager;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,8 +22,8 @@ public class MinifigsDao extends AbstractDao<Minifig,Long> {
         meta = QMinifig.minifig;
     }
 
-    public MinifigsDao(EntityManager em) {
-        super(Minifig.class, em);
+    public MinifigsDao(EntityManager em, JPQLQueryFactory queryFactory) {
+        super(Minifig.class, em, queryFactory);
     }
 
     public Page<Minifig> findAllWithoutImg(Pageable pageable) {
