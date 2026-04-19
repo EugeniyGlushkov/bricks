@@ -9,7 +9,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import ru.briks.dao.InventoryPartDao;
 import ru.briks.entity.InventoryPart;
-import ru.briks.service.*;
+import ru.briks.service.DownloadService;
+import ru.briks.service.InventoryPartService;
+import ru.briks.service.MinifigService;
+import ru.briks.service.SetService;
 import ru.briks.service.price.ElementInfoPriceService;
 
 /**
@@ -19,9 +22,6 @@ import ru.briks.service.price.ElementInfoPriceService;
  */
 
 @SpringBootTest
-//@ContextConfiguration
-//@AutoConfigureMockMvc
-//@WebAppConfiguration
 @RunWith(SpringRunner.class)
 public class DbOperations {
     @Autowired

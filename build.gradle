@@ -10,6 +10,24 @@ plugins {
     id 'org.springframework.boot' version '3.2.5'
     id 'groovy'
     id 'war'
+    id 'checkstyle'
+}
+
+checkstyle {
+    toolVersion = '10.12.5'
+    configFile = file("${rootDir}/config/checkstyle/checkstyle.xml")
+    ignoreFailures = false  // ⛔️ Сборка упадёт при любой ошибке
+    maxWarnings = 0         // ⛔️ Сборка упадёт даже при warning
+    showViolations = true
+}
+
+tasks.withType(Checkstyle).configureEach {
+    exclude '**/generated/**'
+    exclude '**/Q*.java'
+}
+
+tasks.named('build') {
+    dependsOn 'checkstyleMain', 'checkstyleTest'
 }
 
 compileJava {

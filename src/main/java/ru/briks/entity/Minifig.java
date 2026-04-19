@@ -3,7 +3,11 @@ package ru.briks.entity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
-import lombok.*;
+import jakarta.validation.constraints.NotNull;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 import lombok.experimental.Accessors;
 
 
@@ -22,7 +26,7 @@ import lombok.experimental.Accessors;
 @Table(name = "minifigs")
 public class Minifig extends DomainObject {
 
-    @NonNull
+    @NotNull(message = "Figure's number is required")
     @Column(name = "fig_num")
     @ToString.Include
     @EqualsAndHashCode.Include
