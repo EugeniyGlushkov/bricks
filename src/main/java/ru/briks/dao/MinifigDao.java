@@ -5,8 +5,8 @@ import jakarta.persistence.EntityManager;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
-import ru.briks.entity.InventoryPart;
-import ru.briks.entity.QInventoryPart;
+import ru.briks.entity.Minifig;
+import ru.briks.entity.QMinifig;
 
 /**
  * @author EGlushkov
@@ -15,18 +15,18 @@ import ru.briks.entity.QInventoryPart;
  */
 
 @Repository
-public class InventoryPartsDao extends AbstractDao<InventoryPart,Long> {
-    private static final QInventoryPart meta;
+public class MinifigDao extends AbstractDao<Minifig,Long> {
+    private static final QMinifig meta;
 
     static {
-        meta = QInventoryPart.inventoryPart;
+        meta = QMinifig.minifig;
     }
 
-    public InventoryPartsDao(EntityManager em, JPQLQueryFactory queryFactory) {
-        super(InventoryPart.class, em, queryFactory);
+    public MinifigDao(EntityManager em, JPQLQueryFactory queryFactory) {
+        super(Minifig.class, em, queryFactory);
     }
 
-    public Page<InventoryPart> findAllWithoutImg(Pageable pageable) {
+    public Page<Minifig> findAllWithoutImg(Pageable pageable) {
         return findAll(meta.imgPath.isNull().and(meta.outerImgUrl.isNotEmpty()), pageable);
     }
 }

@@ -40,5 +40,7 @@ public interface CustomQueryDslJpaRepository<T, ID extends Serializable>{
 
     <S extends T> List<S> saveAll(Iterable<S> entities);
 
+    void deleteById(ID id);
+
     JPQLQueryFactory query();
 }

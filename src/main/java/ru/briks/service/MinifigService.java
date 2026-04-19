@@ -1,11 +1,11 @@
-package ru.briks.services;
+package ru.briks.service;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-import ru.briks.dao.MinifigsDao;
+import ru.briks.dao.MinifigDao;
 import ru.briks.entity.Minifig;
 
 import java.io.IOException;
@@ -24,12 +24,12 @@ import java.util.concurrent.CompletableFuture;
 public class MinifigService {
 
     @Autowired
-    private MinifigsDao minifigsDao;
+    private MinifigDao minifigDao;
     @Autowired
     private DownloadService downloadService;
 
     public void parseImages(String basePath) throws IOException {
-        int totalPages = minifigsDao.findAllWithoutImg(PageRequest.of(0, 10)).getTotalPages();
+        int totalPages = minifigDao.findAllWithoutImg(PageRequest.of(0, 10)).getTotalPages();
         log.info("Total pages: {}", totalPages);
         List<CompletableFuture<Void>> futures = new ArrayList<>();
 
@@ -52,7 +52,7 @@ public class MinifigService {
     }
 
     public Minifig getOne(Long id) {
-        return minifigsDao.findById(id)
+        return minifigDao.findById(id)
                 .orElseThrow(() ->
                         new EntityNotFoundException("Minifig with id: [%s] is not existed.".formatted(id)));
     }

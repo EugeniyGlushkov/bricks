@@ -7,10 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import ru.briks.dao.InventoryPartsDao;
+import ru.briks.dao.InventoryPartDao;
 import ru.briks.entity.InventoryPart;
-import ru.briks.services.*;
-import ru.briks.services.price.ElementInfoService;
+import ru.briks.service.*;
+import ru.briks.service.price.ElementInfoPriceService;
 
 /**
  * @author EGlushkov
@@ -27,15 +27,15 @@ public class DbOperations {
     @Autowired
     private MinifigService minifigService;
     @Autowired
-    private SetsService setsService;
+    private SetService setService;
     @Autowired
     private InventoryPartService inventoryPartService;
     @Autowired
     private DownloadService downloadService;
     @Autowired
-    private InventoryPartsDao inventoryPartsDao;
+    private InventoryPartDao inventoryPartDao;
     @Autowired
-    private ElementInfoService elementInfoService;
+    private ElementInfoPriceService elementInfoPriceService;
 
     @Value("${app.images.path:D:\\lego\\images}")
     private String basePath;
@@ -49,7 +49,7 @@ public class DbOperations {
     @Test
     @SneakyThrows
     public void downloadSetsImages()  {
-        setsService.parseImages(basePath);
+        setService.parseImages(basePath);
     }
 
     @Test
@@ -61,7 +61,7 @@ public class DbOperations {
     @Test
     @SneakyThrows
     public void downloadImageById()  {
-        InventoryPart invP = inventoryPartsDao.findById(99108L).get();
+        InventoryPart invP = inventoryPartDao.findById(99108L).get();
         downloadService.downloadImg(basePath, invP.getOuterImgUrl());
     }
 
@@ -69,7 +69,7 @@ public class DbOperations {
     @Test
     @SneakyThrows
     public void downloadPrices()  {
-        elementInfoService.downloadPrices();
+        elementInfoPriceService.downloadPrices();
         System.out.println();
     }
 }

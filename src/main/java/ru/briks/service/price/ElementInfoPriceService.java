@@ -1,17 +1,17 @@
-package ru.briks.services.price;
+package ru.briks.service.price;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import ru.briks.dao.ElementInfoDao;
-import ru.briks.dao.ElementsDao;
+import ru.briks.dao.ElementDao;
 import ru.briks.dto.BrickProductDto;
 import ru.briks.dto.VariantDto;
 import ru.briks.entity.Element;
 import ru.briks.entity.ElementInfo;
 import ru.briks.entity.State;
-import ru.briks.services.web.WebDataService;
+import ru.briks.service.web.WebDataService;
 import ru.briks.settings.VariantsSettings;
 
 import java.math.BigDecimal;
@@ -30,7 +30,7 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @Service
-public class ElementInfoService {
+public class ElementInfoPriceService {
     @Value("${urls.details}")
     private String detailsUrl;
     @Autowired
@@ -38,7 +38,7 @@ public class ElementInfoService {
     @Autowired
     private WebDataService webDataService;
     @Autowired
-    private ElementsDao elementsDao;
+    private ElementDao elementDao;
     @Autowired
     private ElementInfoDao elementInfoDao;
 
@@ -57,7 +57,7 @@ public class ElementInfoService {
                 List<String> models = products.stream()
                         .map(BrickProductDto::getModel)
                         .toList();
-                Map<String, Element> elementIdToElements = elementsDao.findByElementIds(models).stream()
+                Map<String, Element> elementIdToElements = elementDao.findByElementIds(models).stream()
                         .collect(Collectors.toMap(Element::getElementId, e -> e));
 
                 List<ElementInfo> elementInfos = products.stream()

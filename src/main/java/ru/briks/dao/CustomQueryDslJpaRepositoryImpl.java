@@ -8,7 +8,7 @@ import com.querydsl.core.types.dsl.PathBuilder;
 import com.querydsl.jpa.JPQLQuery;
 import com.querydsl.jpa.JPQLQueryFactory;
 import jakarta.persistence.EntityManager;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -41,7 +41,7 @@ public abstract class CustomQueryDslJpaRepositoryImpl<T, ID extends Serializable
     protected final EntityManager em;
     protected final JpaEntityInformation<T, ID> entityInformation;
 
-    private JPQLQueryFactory query;
+    private final JPQLQueryFactory query;
 
     public CustomQueryDslJpaRepositoryImpl(JpaEntityInformation<T, ID> entityInformation,
                                            EntityManager entityManager,
@@ -152,6 +152,23 @@ public abstract class CustomQueryDslJpaRepositoryImpl<T, ID extends Serializable
         }
 
         return result;
+    }
+
+    @Override
+    public void deleteById(ID id) {
+        Assert.notNull(id, ID_MUST_NOT_BE_NULL);
+
+        // Находим сущность по ID. em.find() возвращает полностью управляемый (managed) объект.
+        T entity = em.find(entityInformation.getJavaType(), id);
+
+        if (entity == null) {
+            throw new EmptyResultDataAccessException(
+                    String.format("No %s entity with id %s exists!",
+                            entityInformation.getJavaType().getSimpleName(), id), 1);
+        }
+
+        // Удаляем из контекста персистентности. При коммите транзакции выполнится DELETE.
+        em.remove(entity);
     }
 
     @Override

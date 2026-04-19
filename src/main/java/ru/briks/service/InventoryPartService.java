@@ -1,10 +1,10 @@
-package ru.briks.services;
+package ru.briks.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-import ru.briks.dao.InventoryPartsDao;
+import ru.briks.dao.InventoryPartDao;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -24,10 +24,10 @@ public class InventoryPartService {
     @Autowired
     private DownloadService downloadService;
     @Autowired
-    private InventoryPartsDao inventoryPartsDao;
+    private InventoryPartDao inventoryPartDao;
 
     public void parseImages(String basePath) {
-        int totalPages = inventoryPartsDao.findAllWithoutImg(PageRequest.of(0, 10)).getTotalPages();
+        int totalPages = inventoryPartDao.findAllWithoutImg(PageRequest.of(0, 10)).getTotalPages();
         log.info("Total pages: {}", totalPages);
         List<CompletableFuture<Void>> futures = new ArrayList<>();
 

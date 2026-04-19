@@ -1,10 +1,10 @@
-package ru.briks.services;
+package ru.briks.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-import ru.briks.dao.SetsDao;
+import ru.briks.dao.SetDao;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -19,15 +19,15 @@ import java.util.concurrent.CompletableFuture;
 
 @Slf4j
 @Service
-public class SetsService {
+public class SetService {
 
     @Autowired
     private DownloadService downloadService;
     @Autowired
-    private SetsDao setsDao;
+    private SetDao setDao;
 
     public void parseImages(String basePath) {
-        int totalPages = setsDao.findAllWithoutImg(PageRequest.of(0, 10)).getTotalPages();
+        int totalPages = setDao.findAllWithoutImg(PageRequest.of(0, 10)).getTotalPages();
         List<CompletableFuture<Void>> futures = new ArrayList<>();
 
         for (int i = 0; i < totalPages; i++) {

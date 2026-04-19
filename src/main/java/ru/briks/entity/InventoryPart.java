@@ -25,36 +25,22 @@ import lombok.experimental.Accessors;
 public class InventoryPart extends DomainObject {
 
     @Column(name = "inventory_id")
-    @ToString.Include
-    @EqualsAndHashCode.Include
     private Long inventoryId;
 
     @Column(name = "part_id")
-    @ToString.Include
-    @EqualsAndHashCode.Include
     private Long partId;
 
     @Column(name = "color_id")
-    @ToString.Include
-    @EqualsAndHashCode.Include
     private Long colorId;
 
-    @ToString.Include
-    @EqualsAndHashCode.Include
     private Integer quantity;
 
     @Column(name = "is_spare")
-    @ToString.Include
-    @EqualsAndHashCode.Include
     private Boolean isSpare;
 
     @Column(name = "outer_img_url")
-    @ToString.Include
-    @EqualsAndHashCode.Include
     private String outerImgUrl;
 
     @Column(name = "img_path")
-    @ToString.Include
-    @EqualsAndHashCode.Include
     private String imgPath;
 }

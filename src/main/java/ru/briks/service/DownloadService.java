@@ -1,4 +1,4 @@
-package ru.briks.services;
+package ru.briks.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,9 +7,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
-import ru.briks.dao.InventoryPartsDao;
-import ru.briks.dao.MinifigsDao;
-import ru.briks.dao.SetsDao;
+import ru.briks.dao.InventoryPartDao;
+import ru.briks.dao.MinifigDao;
+import ru.briks.dao.SetDao;
 import ru.briks.entity.InventoryPart;
 import ru.briks.entity.Minifig;
 import ru.briks.entity.Set;
@@ -33,15 +33,15 @@ import java.nio.file.StandardCopyOption;
 public class DownloadService {
 
     @Autowired
-    private MinifigsDao minifigsDao;
+    private MinifigDao minifigDao;
     @Autowired
-    private SetsDao setsDao;
+    private SetDao setDao;
     @Autowired
-    private InventoryPartsDao inventoryPartsDao;
+    private InventoryPartDao inventoryPartDao;
 
     @Transactional
     public boolean downloadMinifigImgBatch(int batchNum, String basePath, int totalPages) throws IOException {
-        Page<Minifig> minifigPage = minifigsDao.findAllWithoutImg(PageRequest.of(batchNum, 10));
+        Page<Minifig> minifigPage = minifigDao.findAllWithoutImg(PageRequest.of(batchNum, 10));
         log.info("Batch is: %d from %d".formatted(batchNum, totalPages));
 
         if (minifigPage.getSize() == 0) {
@@ -53,7 +53,7 @@ public class DownloadService {
 
             if (StringUtils.hasText(relFileName)) {
                 minifig.setImgPath(relFileName);
-                minifigsDao.save(minifig);
+                minifigDao.save(minifig);
             }
         }
 
@@ -62,7 +62,7 @@ public class DownloadService {
 
     @Transactional
     public boolean downloadSetImgBatch(int batchNum, String basePath, int totalPages) throws IOException {
-        Page<Set> setsPage = setsDao.findAllWithoutImg(PageRequest.of(batchNum, 10));
+        Page<Set> setsPage = setDao.findAllWithoutImg(PageRequest.of(batchNum, 10));
         log.info("Batch is: %d from %d".formatted(batchNum, totalPages));
 
         if (setsPage.getSize() == 0) {
@@ -74,7 +74,7 @@ public class DownloadService {
 
             if (StringUtils.hasText(relFileName)) {
                 set.setImgPath(relFileName);
-                setsDao.save(set);
+                setDao.save(set);
             }
         }
 
@@ -83,7 +83,7 @@ public class DownloadService {
 
     @Transactional
     public boolean downloadInventoryPartImgBatch(int batchNum, String basePath, int totalPages) throws IOException {
-        Page<InventoryPart> setsPage = inventoryPartsDao.findAllWithoutImg(PageRequest.of(batchNum, 10));
+        Page<InventoryPart> setsPage = inventoryPartDao.findAllWithoutImg(PageRequest.of(batchNum, 10));
         log.info("Batch is: %d from %d".formatted(batchNum, totalPages));
 
         if (setsPage.getSize() == 0) {
@@ -95,7 +95,7 @@ public class DownloadService {
 
             if (StringUtils.hasText(relFileName)) {
                 invPart.setImgPath(relFileName);
-                inventoryPartsDao.save(invPart);
+                inventoryPartDao.save(invPart);
             }
         }
 

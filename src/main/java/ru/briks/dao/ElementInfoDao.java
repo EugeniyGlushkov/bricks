@@ -3,9 +3,7 @@ package ru.briks.dao;
 import com.querydsl.jpa.JPQLQueryFactory;
 import jakarta.persistence.EntityManager;
 import org.springframework.stereotype.Repository;
-import ru.briks.entity.ElementInfo;
-import ru.briks.entity.QElementInfo;
-import ru.briks.entity.State;
+import ru.briks.entity.*;
 
 import java.util.Optional;
 
