@@ -16,6 +16,7 @@ import ru.briks.entity.QInventoryPart;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.function.LongSupplier;
 
 /**
  * @author EGlushkov
@@ -76,7 +77,7 @@ public class ElementDao extends AbstractDao<Element,Long> {
     }
 
     public Page<ElementOfferDto> findOffersByPartId(Long partId, Predicate predicate, Pageable pageable) {
-        var query = query()
+        var dataQuery = query()
                 .select(Projections.constructor(ElementOfferDto.class,
                         meta.id, meta.part.partNum, meta.part.name, meta.color.name, meta.color.rgb,
                         EI.id, EI.state, EI.count, EI.price, EI.priceKuboka,
@@ -97,12 +98,26 @@ public class ElementDao extends AbstractDao<Element,Long> {
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize());
 
-        var countQuery = query()
-                .select(EI.id.countDistinct())
+        // === Count-запрос: точное количество строк результата ===
+        // Выполняется лениво, только когда шаблон спросит totalPages
+        LongSupplier countSupplier = () -> query()
                 .from(meta)
                 .where(meta.part.id.eq(partId))
-                .where(predicate);
+                .leftJoin(EI).on(EI.element.id.eq(meta.id))
+                .leftJoin(IP).on(
+                        IP.partId.eq(meta.part.id)
+                                .and(IP.colorId.eq(meta.color.id))
+                                .and(IP.outerImgUrl.isNotNull())
+                                .and(IP.outerImgUrl.ne(""))
+                )
+                .where(predicate)
+                .distinct()
+                .fetchCount();  // ← Возвращает long, выполняется только при вызове
 
-        return PageableExecutionUtils.getPage(query.fetch(), pageable, () -> countQuery.fetchOne());
+        return PageableExecutionUtils.getPage(
+                dataQuery.fetch(),
+                pageable,
+                countSupplier  // ← Supplier<Long>, не выполняется, пока не нужен total
+        );
     }
 }

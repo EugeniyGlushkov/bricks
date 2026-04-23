@@ -30,11 +30,13 @@ public class PartService {
 
     public Page<PartAdminDto> findPartsForAdmin(String search, Pageable pageable) {
         BooleanBuilder builder = new BooleanBuilder();
+
         if (search != null && !search.isBlank()) {
-            String term = "%" + search.trim().toLowerCase() + "%";
-            builder.and(meta.partNum.toLowerCase().contains(term)
-                    .or(meta.name.toLowerCase().contains(term)));
+            String term = search.trim();
+            builder.and(meta.partNum.containsIgnoreCase(term)
+                    .or(meta.name.containsIgnoreCase(term)));
         }
+
         return partDao.findPartsForAdmin(builder, pageable);
     }
 }

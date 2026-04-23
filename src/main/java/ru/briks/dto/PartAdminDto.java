@@ -4,7 +4,7 @@ public record PartAdminDto(
         Long id,
         String partNum,
         String name,
-        Long partCatId,
+        Long categoryId,
         String imageUrl
 ) {
 }
