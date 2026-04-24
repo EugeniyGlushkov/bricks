@@ -1,17 +1,23 @@
 package ru.briks.controllers.admin;
 
+import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import ru.briks.dto.ElementInfoFormDto;
 import ru.briks.dto.ElementOfferDto;
 import ru.briks.dto.PartAdminDto;
 import ru.briks.entity.State;
+import ru.briks.service.ElementInfoService;
 import ru.briks.service.ElementService;
 import ru.briks.service.PartService;
 
@@ -27,10 +33,14 @@ public class AdminController {
 
     private final PartService partService;
     private final ElementService elementService;
+    private final ElementInfoService elementInfoService;
 
-    public AdminController(PartService partService, ElementService elementService) {
+    public AdminController(PartService partService,
+                           ElementService elementService,
+                           ElementInfoService elementInfoService) {
         this.partService = partService;
         this.elementService = elementService;
+        this.elementInfoService = elementInfoService;
     }
 
     @GetMapping
@@ -79,5 +89,54 @@ public class AdminController {
         model.addAttribute("pageSize", size);
 
         return "admin/part-offers";
+    }
+
+    @GetMapping("/offers/{id}/edit")
+    public String editOffer(@PathVariable Long id, Model model) {
+        var info = elementInfoService.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Offer not found: " + id));
+
+        var form = new ElementInfoFormDto();
+        form.setId(info.getId());
+        form.setElementId(info.getElement().getId());
+        form.setPartId(info.getElement().getPart().getId());
+        form.setState(info.getState());
+        form.setCount(info.getCount());
+        form.setPrice(info.getPrice());
+        form.setPriceKuboka(info.getPriceKuboka());
+
+        model.addAttribute("form", form);
+        model.addAttribute("isEdit", true);
+        return "admin/offer-form";
+    }
+
+    @GetMapping("/offers/new")
+    public String newOffer(@RequestParam Long elementId, @RequestParam State state, Model model) {
+        var form = new ElementInfoFormDto();
+        form.setElementId(elementId);
+        form.setState(state);
+        form.setCount(0L);
+
+        model.addAttribute("form", form);
+        model.addAttribute("isEdit", false);
+        return "admin/offer-form";
+    }
+
+    @PostMapping("/offers/save")
+    public String saveOffer(@Valid @ModelAttribute("form") ElementInfoFormDto form,
+                            BindingResult result, Model model) {
+        if (result.hasErrors()) {
+            model.addAttribute("isEdit", form.getId() != null);
+            return "admin/offer-form";
+        }
+
+        elementInfoService.saveFromForm(form);
+        return "redirect:/admin/parts/" + form.getPartId() + "/offers";
+    }
+
+    @PostMapping("/offers/{id}/delete")
+    public String deleteOffer(@PathVariable Long id, @RequestParam Long partId) {
+        elementInfoService.deleteById(id);
+        return "redirect:/admin/parts/" + partId + "/offers";
     }
 }

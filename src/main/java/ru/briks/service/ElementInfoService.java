@@ -2,7 +2,10 @@ package ru.briks.service;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.briks.dao.ElementDao;
 import ru.briks.dao.ElementInfoDao;
+import ru.briks.dto.ElementInfoFormDto;
+import ru.briks.entity.Element;
 import ru.briks.entity.ElementInfo;
 import ru.briks.entity.State;
 import java.util.Optional;
@@ -17,15 +20,19 @@ import java.util.Optional;
 @Transactional
 public class ElementInfoService {
     private final ElementInfoDao elementInfoDao;
+    private final ElementDao elementDao;
 
-    public ElementInfoService(ElementInfoDao elementInfoDao) {
+    public ElementInfoService(ElementInfoDao elementInfoDao, ElementDao elementDao) {
         this.elementInfoDao = elementInfoDao;
+        this.elementDao = elementDao;
     }
 
+    @Transactional(readOnly = true)
     public Optional<ElementInfo> findById(Long id) {
         return elementInfoDao.findById(id);
     }
 
+    @Transactional(readOnly = true)
     public Optional<ElementInfo> findByElementIdAndState(Long elementId, State state) {
         return elementInfoDao.findByElementIdAndState(elementId, state);
     }
@@ -36,5 +43,30 @@ public class ElementInfoService {
 
     public void deleteById(Long id) {
         elementInfoDao.deleteById(id);
+    }
+
+    public void saveFromForm(ElementInfoFormDto dto) {
+        ElementInfo info;
+
+        if (dto.getId() != null) {
+            // Update existing
+            info = elementInfoDao.findById(dto.getId())
+                    .orElseThrow(() -> new IllegalArgumentException("Offer not found: " + dto.getId()));
+            info.setCount(dto.getCount());
+            info.setPrice(dto.getPrice());
+            info.setPriceKuboka(dto.getPriceKuboka());
+        } else {
+            // Create new
+            info = new ElementInfo();
+            Element element = elementDao.findById(dto.getElementId())
+                    .orElseThrow(() -> new IllegalArgumentException("Element not found: " + dto.getElementId()));
+            info.setElement(element);
+            info.setState(dto.getState());
+            info.setCount(dto.getCount());
+            info.setPrice(dto.getPrice());
+            info.setPriceKuboka(dto.getPriceKuboka());
+        }
+
+        elementInfoDao.save(info);
     }
 }

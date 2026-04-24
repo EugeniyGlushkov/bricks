@@ -1,22 +1,136 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
-    <title>Админка</title>
+    <title>Панель администратора</title>
+    <style>
+        body {
+            font-family: system-ui, sans-serif;
+            margin: 2rem;
+            background: #f8f9fa;
+            color: #333;
+        }
+
+        header {
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #dee2e6;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        header a {
+            color: #007bff;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        header a:hover {
+            text-decoration: underline;
+        }
+
+        header .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            color: #666;
+        }
+
+        header button {
+            background: none;
+            border: none;
+            color: #007bff;
+            cursor: pointer;
+            padding: 0;
+            font: inherit;
+            font-weight: 500;
+        }
+
+        header button:hover {
+            text-decoration: underline;
+            color: #0056b3;
+        }
+
+        .dashboard {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            margin-bottom: 2rem;
+            color: #333;
+        }
+
+        .card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 1rem;
+        }
+
+        .card h2 {
+            margin: 0 0 0.5rem;
+            font-size: 1.25rem;
+        }
+
+        .card p {
+            color: #666;
+            margin-bottom: 1rem;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 0.6rem 1.2rem;
+            background: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: 500;
+        }
+
+        .btn:hover {
+            background: #0056b3;
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+        }
+
+        .btn-secondary:hover {
+            background: #545b62;
+        }
+    </style>
 </head>
 <body>
-<header>
-    <a th:href="@{/}">Главная</a> |
-    <span sec:authorize="isAuthenticated()">
-            👤 <span sec:authentication="name"></span>
+    <header>
+        <a th:href="@{/}">← Главная</a>
+        <div class="user-info" sec:authorize="isAuthenticated()">
+            <span>👤 <span sec:authentication="name"></span></span>
             <form th:action="@{/logout}" method="post" style="display:inline">
                 <button type="submit">Выйти</button>
             </form>
-        </span>
-</header>
-<main style="margin-top: 1.5rem;">
-    <h2>Панель администратора</h2>
-    <p>Управление каталогом будет добавлено в Фазе 1.</p>
-</main>
+        </div>
+    </header>
+
+    <div class="dashboard">
+        <h1>👋 Добро пожаловать в панель администратора</h1>
+
+        <div class="card">
+            <h2>📦 Управление деталями</h2>
+            <p>Просмотр, фильтрация и редактирование предложений (цены, остатки, состояния).</p>
+            <a th:href="@{/admin/parts}" class="btn">Перейти к списку деталей →</a>
+        </div>
+
+        <div class="card" style="opacity: 0.6;">
+            <h2>🚧 Скоро: Минифигурки и Заказы</h2>
+            <p>Разделы в разработке. Статистика и массовые операции появятся здесь.</p>
+            <span class="btn btn-secondary" style="cursor: not-allowed; pointer-events: none;">В разработке</span>
+        </div>
+    </div>
 </body>
 </html>

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Редактирование предложения</title>
+    <style>
+        body {
+            font-family: system-ui, sans-serif;
+            margin: 2rem;
+            max-width: 600px;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        input[readonly] {
+            background: #f5f5f5;
+            cursor: not-allowed;
+        }
+
+        input.error, select.error {
+            border-color: #d32f2f;
+            background: #fff8f8;
+        }
+
+        .error-message {
+            color: #d32f2f;
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+            min-height: 1.25rem;
+        }
+
+        .form-actions {
+            margin-top: 2rem;
+            display: flex;
+            gap: 1rem;
+        }
+
+        button {
+            padding: 0.5rem 1.5rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        .btn-primary {
+            background: #007bff;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #0056b3;
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem 1.5rem;
+            border-radius: 4px;
+        }
+
+        .btn-secondary:hover {
+            background: #545b62;
+        }
+
+        .required {
+            color: #d32f2f;
+        }
+    </style>
+</head>
+<body>
+    <h1 th:text="${isEdit} ? '✏️ Редактировать предложение' : '➕ Новое предложение'">Заголовок</h1>
+
+    <form th:action="@{/admin/offers/save}" th:object="${form}" method="post">
+        <!-- Hidden fields -->
+        <input type="hidden" th:field="*{id}">
+        <input type="hidden" th:field="*{elementId}">
+        <input type="hidden" th:field="*{partId}">
+
+        <!-- State (readonly) -->
+        <div class="form-group">
+            <label>Состояние</label>
+            <input type="text" th:field="*{state}" readonly th:value="*{state}" class="readonly">
+            <div class="error-message"></div>
+        </div>
+
+        <!-- Count -->
+        <div class="form-group">
+            <label for="count">Остаток <span class="required">*</span></label>
+            <input type="number" id="count" th:field="*{count}" min="0"
+                   th:class="${#fields.hasErrors('count')} ? 'error' : ''">
+            <div class="error-message" th:if="${#fields.hasErrors('count')}" th:errors="*{count}">Ошибка</div>
+        </div>
+
+        <!-- Price -->
+        <div class="form-group">
+            <label for="price">Цена</label>
+            <input type="number" step="0.01" id="price" th:field="*{price}" min="0.01"
+                   th:class="${#fields.hasErrors('price')} ? 'error' : ''">
+            <div class="error-message" th:if="${#fields.hasErrors('price')}" th:errors="*{price}">Ошибка</div>
+        </div>
+
+        <!-- PriceKuboka -->
+        <div class="form-group">
+            <label for="priceKuboka">Цена (Кубока)</label>
+            <input type="number" step="0.01" id="priceKuboka" th:field="*{priceKuboka}" min="0.01"
+                   th:class="${#fields.hasErrors('priceKuboka')} ? 'error' : ''">
+            <div class="error-message" th:if="${#fields.hasErrors('priceKuboka')}" th:errors="*{priceKuboka}">Ошибка
+            </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="form-actions">
+            <button type="submit" class="btn-primary">💾 Сохранить</button>
+            <a th:href="@{/admin/parts/{partId}/offers(partId=${form.partId})}" class="btn-secondary">✕ Отмена</a>
+        </div>
+    </form>
+
+    <!-- Скрипт для подсветки полей при фокусе (опционально) -->
+    <script th:inline="javascript">
+        document.querySelectorAll('input:not([readonly])').forEach(input => {
+            input.addEventListener('focus', function () {
+                this.classList.remove('error');
+            });
+        });
+    </script>
+</body>
+</html>

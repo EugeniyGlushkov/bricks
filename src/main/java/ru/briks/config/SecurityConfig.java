@@ -1,10 +1,10 @@
 package ru.briks.config;
 
+import org.springframework.boot.security.autoconfigure.web.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
 
 /**
@@ -20,8 +20,12 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/css/**", "/js/**", "/images/**", "/login", "/actuator/**").permitAll()
+                        .requestMatchers("/", "/login", "/error").permitAll()
+                        .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
+                        .requestMatchers("/catalog/**", "/api/public/**").permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
+                        // TODO Актуаторы (в проде лучше ограничить ролью или отключить публичный доступ)
+                        .requestMatchers("/actuator/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
@@ -34,7 +38,10 @@ public class SecurityConfig {
                         .logoutSuccessUrl("/login?logout")
                         .permitAll()
                 )
-                .csrf(AbstractHttpConfigurer::disable); //TODO ⚠️ Отключено для удобства локальной разработки. Включим в Фазе 2.
+                .csrf(csrf -> csrf
+                        // ✅ CSRF отключен ТОЛЬКО для публичного API
+                        .ignoringRequestMatchers("/api/public/**")
+                );
 
         return http.build();
     }
