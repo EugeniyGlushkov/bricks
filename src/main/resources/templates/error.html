@@ -3,13 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <title>Ошибка</title>
-    <style>body{font-family:system-ui;margin:3rem;text-align:center;}</style>
+    <style>
+        body { font-family: system-ui, sans-serif; margin: 0; background: #f8f9fa; }
+        .error-container { max-width: 600px; margin: 5rem auto; padding: 2rem; background: white; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; }
+        h1 { margin: 0 0 1rem; font-size: 3rem; color: #333; }
+        p { font-size: 1.1rem; margin: 0 0 2rem; color: #666; }
+        a { color: #007bff; text-decoration: none; font-weight: 500; }
+        a:hover { text-decoration: underline; }
+        .status-403 { color: #d32f2f; }
+        .status-404 { color: #ff9800; }
+        .status-500 { color: #757575; }
+    </style>
 </head>
 <body>
-<h2>⚠️ Произошла ошибка</h2>
-<p th:text="${errorMessage} ?: 'Внутренняя ошибка сервера (500)'" style="color:#666;"></p>
-<p style="font-size:0.9em;color:#999;margin-top:2rem;">
-    <a th:href="@{/}">← На главную</a>
-</p>
+    <div class="error-container">
+        <h1 th:text="${status} ?: 'Ошибка'">Статус</h1>
+
+        <p th:switch="${status}">
+            <span th:case="403" class="status-403">🔒 Доступ запрещён.<br>У вас недостаточно прав для просмотра этой страницы.</span>
+            <span th:case="404" class="status-404">🔍 Страница не найдена.<br>Возможно, ссылка устарела или была введена неверно.</span>
+            <span th:case="500" class="status-500">⚠️ Внутренняя ошибка сервера.<br>Мы уже работаем над исправлением. Попробуйте позже.</span>
+            <span th:case="*" th:text="${error} ?: 'Произошла непредвиденная ошибка'"></span>
+        </p>
+
+        <a th:href="@{/}">← Вернуться на главную</a>
+    </div>
 </body>
 </html>
