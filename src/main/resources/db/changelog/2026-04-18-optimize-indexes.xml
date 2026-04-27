@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <!-- 1. Удаление старого индекса elements -->
+    <changeSet id="20260418-001-drop-elements-part-idx" author="EGlushkov">
+        <preConditions onFail="MARK_RAN">
+            <indexExists indexName="elements_part_id_idx" tableName="elements"/>
+        </preConditions>
+        <dropIndex indexName="elements_part_id_idx" tableName="elements"/>
+    </changeSet>
+
+    <!-- 2. Создание составного индекса elements -->
+    <changeSet id="20260418-002-create-elements-part-color-idx" author="EGlushkov">
+        <createIndex indexName="elements_part_id_color_id_idx" tableName="elements">
+            <column name="part_id"/>
+            <column name="color_id"/>
+        </createIndex>
+    </changeSet>
+
+    <!-- 3. Удаление индекса inventory_parts (part_id) -->
+    <changeSet id="20260418-003-drop-inv-parts-part-idx" author="EGlushkov">
+        <preConditions onFail="MARK_RAN">
+            <indexExists indexName="inventory_parts_part_id_idx" tableName="inventory_parts"/>
+        </preConditions>
+        <dropIndex indexName="inventory_parts_part_id_idx" tableName="inventory_parts"/>
+    </changeSet>
+
+    <!-- 4. Удаление индекса inventory_parts (color_id) -->
+    <changeSet id="20260418-004-drop-inv-parts-color-idx" author="EGlushkov">
+        <preConditions onFail="MARK_RAN">
+            <indexExists indexName="inventory_parts_color_id_idx" tableName="inventory_parts"/>
+        </preConditions>
+        <dropIndex indexName="inventory_parts_color_id_idx" tableName="inventory_parts"/>
+    </changeSet>
+
+    <!-- 5. Создание составного индекса inventory_parts -->
+    <changeSet id="20260418-005-create-inv-parts-part-color-idx" author="EGlushkov">
+        <createIndex indexName="inventory_parts_part_id_color_id_idx" tableName="inventory_parts">
+            <column name="part_id"/>
+            <column name="color_id"/>
+        </createIndex>
+    </changeSet>
+
+</databaseChangeLog>
