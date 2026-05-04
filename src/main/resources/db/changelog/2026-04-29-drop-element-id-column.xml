@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="20260429-002-drop-element-id-column" author="EGlushkov" failOnError="true">
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="elements"/>
+        </preConditions>
+        <comment>Удаление колонки element_id из таблицы elements (данные сохранены в temp_element_part_color)</comment>
+        <dropColumn tableName="elements" columnName="element_id"/>
+    </changeSet>
+
+    <changeSet id="20260429-003-add-elements-unique-constraint" author="EGlushkov" failOnError="true">
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="elements"/>
+            <not>
+                <uniqueConstraintExists tableName="elements" constraintName="elements_part_color_uq"/>
+            </not>
+        </preConditions>
+        <comment>Добавление UNIQUE-констрейнта на (part_id, color_id) для защиты от дублей</comment>
+        <addUniqueConstraint
+                tableName="elements"
+                columnNames="part_id, color_id"
+                constraintName="elements_part_color_uq"/>
+    </changeSet>
+
+</databaseChangeLog>

@@ -5,12 +5,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.briks.dao.ElementDao;
-import ru.briks.dto.CatalogViewDto;
 import ru.briks.dto.ElementOfferDto;
 import ru.briks.entity.State;
 import ru.briks.service.filter.ElementInfoFilterService;
-
-import java.math.BigDecimal;
 
 /**
  * @author EGlushkov
@@ -27,16 +24,6 @@ public class ElementService {
     public ElementService(ElementDao elementDao, ElementInfoFilterService filterService) {
         this.elementDao = elementDao;
         this.filterService = filterService;
-    }
-
-    public Page<CatalogViewDto> findCatalogOffers(
-            String partName, String partNum, Long colorId, String colorName,
-            State state, BigDecimal minPrice, BigDecimal maxPrice, Pageable pageable) {
-
-        var predicate = filterService.buildPredicate(
-                ElementInfoFilterService.Visibility.PUBLIC,
-                partName, partNum, colorId, colorName, state, minPrice, maxPrice, null);
-        return elementDao.findOffers(predicate, pageable).map(CatalogViewDto::from);
     }
 
     public Page<ElementOfferDto> findOffersByPart(

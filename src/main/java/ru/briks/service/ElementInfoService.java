@@ -9,6 +9,7 @@ import ru.briks.entity.Element;
 import ru.briks.entity.ElementInfo;
 import ru.briks.entity.State;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * @author EGlushkov
@@ -56,6 +57,10 @@ public class ElementInfoService {
             info.setPrice(dto.getPrice());
             info.setPriceKuboka(dto.getPriceKuboka());
         } else {
+            if (elementInfoDao.existsByElementIdAndState(dto.getElementId(), dto.getState())) {
+                throw new IllegalArgumentException("Offer with state " + dto.getState() + " already exists for this element.");
+            }
+
             // Create new
             info = new ElementInfo();
             Element element = elementDao.findById(dto.getElementId())
@@ -68,5 +73,10 @@ public class ElementInfoService {
         }
 
         elementInfoDao.save(info);
+    }
+
+    @Transactional(readOnly = true)
+    public Set<State> getExistingStates(Long elementId) {
+        return elementInfoDao.findExistingStatesByElementId(elementId);
     }
 }

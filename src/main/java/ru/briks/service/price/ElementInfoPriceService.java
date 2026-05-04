@@ -6,21 +6,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import ru.briks.dao.ElementInfoDao;
 import ru.briks.dao.ElementDao;
-import ru.briks.dto.BrickProductDto;
-import ru.briks.dto.VariantDto;
-import ru.briks.entity.Element;
-import ru.briks.entity.ElementInfo;
-import ru.briks.entity.State;
 import ru.briks.service.web.WebDataService;
 import ru.briks.settings.VariantsSettings;
-
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
-import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
 
 /**
  * @author EGlushkov
@@ -42,7 +29,8 @@ public class ElementInfoPriceService {
     @Autowired
     private ElementInfoDao elementInfoDao;
 
-    public void downloadPrices() throws InterruptedException {
+    //TODO uncomment and fix elementId
+    /*public void downloadPrices() throws InterruptedException {
         for (Map.Entry<String, List<VariantDto>> entry : variants.getVariants().entrySet()) {
             List<VariantDto> variants = entry.getValue();
 
@@ -76,5 +64,5 @@ public class ElementInfoPriceService {
                 TimeUnit.SECONDS.sleep(new Random().nextInt(3) + 1);
             }
         }
-    }
+    }*/
 }

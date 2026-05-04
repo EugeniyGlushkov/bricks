@@ -94,11 +94,24 @@
         <input type="hidden" th:field="*{elementId}">
         <input type="hidden" th:field="*{partId}">
 
-        <!-- State (readonly) -->
+        <!-- State -->
         <div class="form-group">
-            <label>Состояние</label>
-            <input type="text" th:field="*{state}" readonly th:value="*{state}" class="readonly">
-            <div class="error-message"></div>
+            <label for="state">Состояние <span class="required">*</span></label>
+
+            <!-- Режим редактирования: только чтение -->
+            <input type="text" id="state" th:field="*{state}" readonly
+                   th:if="${isEdit}" class="readonly">
+
+            <!-- Режим создания: выпадающий список -->
+            <select id="state" th:field="*{state}"
+                    th:if="${!isEdit}"
+                    th:class="${#fields.hasErrors('state')} ? 'error' : ''">
+                <option value="" disabled selected>Выберите состояние</option>
+                <!-- Только доступные состояния -->
+                <option th:each="s : ${availableStates}" th:value="${s}" th:text="${s}">State</option>
+            </select>
+
+            <div class="error-message" th:if="${#fields.hasErrors('state')}" th:errors="*{state}">Ошибка</div>
         </div>
 
         <!-- Count -->

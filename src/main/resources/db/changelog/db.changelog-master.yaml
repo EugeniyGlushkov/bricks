@@ -5,3 +5,9 @@ databaseChangeLog:
   - include:
       file: 2026-04-18-optimize-indexes.xml
       relativeToChangelogFile: true
+  - include:
+      file: 2026-04-29-create-element-external-ids.sql
+      relativeToChangelogFile: true
+  - include:
+      file: 2026-04-29-drop-element-id-column.xml
+      relativeToChangelogFile: true

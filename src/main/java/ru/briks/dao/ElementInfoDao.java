@@ -7,7 +7,9 @@ import ru.briks.entity.ElementInfo;
 import ru.briks.entity.QElementInfo;
 import ru.briks.entity.State;
 
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * @author EGlushkov
@@ -33,5 +35,20 @@ public class ElementInfoDao extends AbstractDao<ElementInfo, Long> {
                 .select(meta)
                 .where(meta.element.id.eq(elementId).and(meta.state.eq(state)))
                 .fetchFirst());
+    }
+
+    public Set<State> findExistingStatesByElementId(Long elementId) {
+        return new HashSet<>(
+                query().from(meta)
+                        .where(meta.element.id.eq(elementId))
+                        .select(meta.state)
+                        .fetch()
+        );
+    }
+
+    public boolean existsByElementIdAndState(Long elementId, State state) {
+        return query().from(meta)
+                .where(meta.element.id.eq(elementId).and(meta.state.eq(state)))
+                .fetchFirst() != null;
     }
 }

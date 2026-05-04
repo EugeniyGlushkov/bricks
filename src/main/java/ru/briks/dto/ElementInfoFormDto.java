@@ -1,6 +1,7 @@
 package ru.briks.dto;
 
 import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import ru.briks.entity.State;
@@ -27,7 +28,7 @@ public class ElementInfoFormDto {
     private State state;
 
     @NotNull(message = "Остаток обязателен")
-    @DecimalMin(value = "0", message = "Остаток не может быть отрицательным")
+    @Min(value = 0, message = "Остаток не может быть отрицательным")
     private Long count;
 
     @DecimalMin(value = "0.01", inclusive = false, message = "Цена должна быть больше 0")
