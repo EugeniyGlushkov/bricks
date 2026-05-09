@@ -13,11 +13,15 @@ import org.springframework.stereotype.Repository;
 import ru.briks.dto.ColorKey;
 import ru.briks.dto.ElementOfferDto;
 import ru.briks.entity.Element;
+import ru.briks.entity.QColor;
 import ru.briks.entity.QElement;
 import ru.briks.entity.QElementExternalId;
 import ru.briks.entity.QElementInfo;
 import ru.briks.entity.QInventoryPart;
+import ru.briks.entity.QPart;
+import ru.briks.entity.State;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -130,5 +134,62 @@ public class ElementDao extends AbstractDao<Element, Long> {
                 .fetchCount();
 
         return PageableExecutionUtils.getPage(offers, pageable, countSupplier);
+    }
+
+    public List<ElementOfferDto> findOffersForCategory(
+            List<Long> categoryIds, Set<State> states, boolean onlyWithPrice, boolean onlyInStock) {
+
+        if (categoryIds == null || categoryIds.isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        QElementInfo EI = QElementInfo.elementInfo;
+        QPart part = QPart.part;
+        QColor color = QColor.color;
+        QInventoryPart IP = QInventoryPart.inventoryPart;
+
+        BooleanBuilder where = new BooleanBuilder();
+        where.and(meta.part.partCategory.id.in(categoryIds));
+
+        if (states != null && !states.isEmpty()) {
+            where.and(EI.state.in(states));
+        }
+        if (onlyWithPrice) {
+            where.and(EI.price.isNotNull().and(EI.price.gt(0)));
+        }
+        if (onlyInStock) {
+            where.and(EI.count.isNotNull().and(EI.count.gt(0)));
+        }
+
+        return query().select(Projections.constructor(ElementOfferDto.class,
+                        meta.id,
+                        part.id,
+                        color.id,
+                        part.partNum,
+                        part.name,
+                        color.name,
+                        Expressions.nullExpression(String.class),
+                        EI.id,
+                        EI.state,
+                        EI.count,
+                        EI.price,
+                        Expressions.nullExpression(BigDecimal.class),
+                        IP.outerImgUrl,
+                        Expressions.nullExpression(List.class) // externalIds не нужны для отчёта
+                ))
+                .from(meta)
+                .join(meta.part, part)
+                .join(meta.color, color)
+                .leftJoin(EI).on(EI.element.id.eq(meta.id))
+                .leftJoin(IP).on(IP.partId.eq(part.id).and(IP.colorId.eq(color.id)))
+                .where(where)
+                // 🔑 Строгая сортировка: Категория → Артикул детали → Цена → Состояние
+                .orderBy(
+                        part.partCategory.id.asc(),
+                        part.partNum.asc(),
+                        EI.price.asc().nullsLast(), // nullsLast защищает от "всплытия" записей без цены
+                        EI.state.asc()
+                )
+                .fetch();
     }
 }

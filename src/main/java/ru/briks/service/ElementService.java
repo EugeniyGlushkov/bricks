@@ -9,6 +9,9 @@ import ru.briks.dto.ElementOfferDto;
 import ru.briks.entity.State;
 import ru.briks.service.filter.ElementInfoFilterService;
 
+import java.util.List;
+import java.util.Set;
+
 /**
  * @author EGlushkov
  * Date: 19.04.2026
@@ -33,5 +36,10 @@ public class ElementService {
                 ElementInfoFilterService.Visibility.ADMIN,
                 null, null, null, null, state, null, null, inStock);
         return elementDao.findOffersByPartId(partId, predicate, pageable);
+    }
+
+    public List<ElementOfferDto> getOffersForCategory(
+            List<Long> categoryIds, Set<State> states, boolean onlyWithPrice, boolean onlyInStock) {
+        return elementDao.findOffersForCategory(categoryIds, states, onlyWithPrice, onlyInStock);
     }
 }

@@ -20,6 +20,7 @@ import ru.briks.dto.PartAdminDto;
 import ru.briks.entity.State;
 import ru.briks.service.ElementInfoService;
 import ru.briks.service.ElementService;
+import ru.briks.service.PartCategoryService;
 import ru.briks.service.PartService;
 
 import java.util.EnumSet;
@@ -42,13 +43,16 @@ public class AdminController {
     private final PartService partService;
     private final ElementService elementService;
     private final ElementInfoService elementInfoService;
+    private final PartCategoryService partCategoryService;
 
     public AdminController(PartService partService,
                            ElementService elementService,
-                           ElementInfoService elementInfoService) {
+                           ElementInfoService elementInfoService,
+                           PartCategoryService partCategoryService) {
         this.partService = partService;
         this.elementService = elementService;
         this.elementInfoService = elementInfoService;
+        this.partCategoryService = partCategoryService;
     }
 
     @GetMapping
@@ -170,5 +174,12 @@ public class AdminController {
         elementInfoService.deleteById(id);
         redirectAttributes.addFlashAttribute(FLASH_MSG_KEY, SUCCESS_DELETE_MSG);
         return "redirect:/admin/parts/" + partId + "/offers";
+    }
+
+    @GetMapping("/reports")
+    public String reportsPage(Model model) {
+        model.addAttribute("categories", partCategoryService.getAll()); // Вернёт List<Category>
+        model.addAttribute("states", State.values());
+        return "admin/reports";
     }
 }

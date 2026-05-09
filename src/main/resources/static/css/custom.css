@@ -1,0 +1,247 @@
+/* Твоя айдентика поверх Bootstrap */
+:root {
+    --bs-body-bg: #f8f9fa;
+    --bs-primary: #007bff;
+    --bs-primary-hover: #0056b3;
+    --bs-secondary: #6c757d;
+}
+
+body {
+    font-family: system-ui, -apple-system, sans-serif;
+    padding: 2rem;
+}
+
+header {
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #dee2e6;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+header a {
+    color: var(--bs-primary);
+    text-decoration: none;
+    font-weight: 500;
+}
+header a:hover { text-decoration: underline; }
+
+header .user-info {
+    display: flex; align-items: center; gap: 1rem; color: #666;
+}
+header button {
+    background: none; border: none; color: var(--bs-primary);
+    cursor: pointer; padding: 0; font: inherit; font-weight: 500;
+}
+header button:hover { text-decoration: underline; color: var(--bs-primary-hover); }
+
+.dashboard { max-width: 800px; margin: 0 auto; }
+
+/* Кастомный дропдаун категорий */
+.custom-dropdown-menu {
+    max-height: 220px; overflow-y: auto;
+}
+.dropdown-item label { cursor: pointer; margin-bottom: 0; }
+
+/* === Admin Tables === */
+.table-admin th {
+    background: var(--bs-light);
+    font-weight: 600;
+    white-space: nowrap;
+}
+.table-admin td {
+    vertical-align: middle;
+}
+.table-admin .thumb {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 4px;
+    border: 1px solid var(--bs-border-color);
+}
+.table-admin .thumb-lg {
+    width: 60px;
+    height: 60px;
+}
+
+/* === Status Badges === */
+.state-NEW {
+    color: var(--bs-success);
+    font-weight: 500;
+}
+.state-USED {
+    color: var(--bs-warning);
+    font-weight: 500;
+}
+.state-BROKEN {
+    color: var(--bs-danger);
+    font-weight: 500;
+}
+
+/* === Price Column === */
+.price {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    text-align: right;
+    white-space: nowrap;
+}
+
+/* === External ID Chips === */
+.external-ids {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-top: 4px;
+}
+.external-id {
+    display: inline-flex;
+    align-items: center;
+    background: var(--bs-light);
+    color: var(--bs-secondary);
+    border: 1px solid var(--bs-border-color);
+    border-radius: 4px;
+    padding: 2px 8px;
+    font-size: 0.75rem;
+    font-family: ui-monospace, monospace;
+    line-height: 1.4;
+}
+.external-id:hover {
+    background: var(--bs-secondary-bg);
+    border-color: var(--bs-secondary-border-subtle);
+}
+
+/* === Empty State === */
+.empty-state {
+    text-align: center;
+    color: var(--bs-secondary);
+    padding: 3rem 1rem;
+}
+
+/* === Form Enhancements === */
+.form-control[readonly] {
+    background: var(--bs-secondary-bg);
+    cursor: not-allowed;
+    opacity: 0.8;
+}
+.form-text-small {
+    font-size: 0.875rem;
+    color: var(--bs-secondary);
+}
+
+/* === Pagination Compact === */
+.pagination-sm .page-link {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+}
+
+/* === Action Buttons in Table === */
+.action-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.25rem;
+    font-size: 1.1rem;
+    line-height: 1;
+    transition: opacity 0.2s;
+}
+.action-btn:hover { opacity: 0.8; }
+.action-btn.edit { color: var(--bs-primary); }
+.action-btn.add { color: var(--bs-success); }
+.action-btn.delete { color: var(--bs-danger); }
+
+/* === Flash Message === */
+.flash-message {
+    border-left: 4px solid var(--bs-success);
+    background: var(--bs-success-bg-subtle);
+    color: var(--bs-success);
+}
+
+/* === Error Page === */
+.error-card {
+    max-width: 600px;
+    margin: 5rem auto;
+}
+.error-status {
+    font-size: 3rem;
+    font-weight: 700;
+    line-height: 1;
+}
+.error-status-403 { color: var(--bs-danger); }
+.error-status-404 { color: var(--bs-warning); }
+.error-status-500 { color: var(--bs-secondary); }
+.error-message {
+    font-size: 1.1rem;
+    color: var(--bs-secondary);
+    line-height: 1.6;
+}
+
+/* === Public Index (Hero) === */
+.hero {
+    text-align: center;
+    padding: 4rem 1rem;
+}
+.hero h1 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+.hero p {
+    font-size: 1.25rem;
+    color: var(--bs-secondary);
+    margin-bottom: 2rem;
+}
+
+/* === Login Page === */
+.login-card {
+    max-width: 400px;
+    margin: 5rem auto;
+}
+.login-card .form-label {
+    font-weight: 500;
+}
+.login-card .form-control {
+    margin-bottom: 1rem;
+}
+.login-card .btn {
+    width: 100%;
+    padding: 0.75rem;
+    font-weight: 500;
+}
+
+/* === Public Header (не админский) === */
+.public-header {
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--bs-border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+.public-header a {
+    color: var(--bs-primary);
+    text-decoration: none;
+    font-weight: 500;
+}
+.public-header a:hover { text-decoration: underline; }
+.public-header .auth-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    color: var(--bs-secondary);
+}
+.public-header .auth-info button {
+    background: none;
+    border: none;
+    color: var(--bs-primary);
+    cursor: pointer;
+    padding: 0;
+    font: inherit;
+    font-weight: 500;
+}
+.public-header .auth-info button:hover {
+    text-decoration: underline;
+    color: var(--bs-primary-hover);
+}

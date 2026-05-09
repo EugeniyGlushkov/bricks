@@ -14,6 +14,7 @@ import ru.briks.service.InventoryPartService;
 import ru.briks.service.MinifigService;
 import ru.briks.service.SetService;
 import ru.briks.service.price.ElementInfoPriceService;
+import ru.briks.utils.ImageUtils;
 
 /**
  * @author EGlushkov
@@ -36,6 +37,8 @@ public class DbOperations {
     private InventoryPartDao inventoryPartDao;
     @Autowired
     private ElementInfoPriceService elementInfoPriceService;
+    @Autowired
+    private ImageUtils imageUtils;
 
     @Value("${app.images.path:D:\\lego\\images}")
     private String basePath;
@@ -62,7 +65,7 @@ public class DbOperations {
     @SneakyThrows
     public void downloadImageById()  {
         InventoryPart invP = inventoryPartDao.findById(99108L).get();
-        downloadService.downloadImg(basePath, invP.getOuterImgUrl());
+        ImageUtils.downloadImgAndWrightToDisk(basePath, invP.getOuterImgUrl());
     }
 
     //move to other service

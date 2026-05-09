@@ -102,6 +102,7 @@ dependencies {
     implementation "com.querydsl:querydsl-jpa:$querydslJpaVersion"
     implementation "com.querydsl:querydsl-core:$querydslCoreVersion"
     implementation "org.thymeleaf.extras:thymeleaf-extras-springsecurity6"
+    implementation "org.apache.poi:poi-ooxml:5.2.5"
     runtimeOnly("org.postgresql:postgresql")
     annotationProcessor(
             "org.springframework.boot:spring-boot-starter-data-jpa",

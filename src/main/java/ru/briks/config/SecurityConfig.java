@@ -23,7 +23,7 @@ public class SecurityConfig {
                         .requestMatchers("/", "/login", "/error").permitAll()
                         .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                         .requestMatchers("/catalog/**", "/api/public/**").permitAll()
-                        .requestMatchers("/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/admin/**", "/reports/**").hasRole("ADMIN")
                         // TODO Актуаторы (в проде лучше ограничить ролью или отключить публичный доступ)
                         .requestMatchers("/actuator/**").permitAll()
                         .anyRequest().authenticated()

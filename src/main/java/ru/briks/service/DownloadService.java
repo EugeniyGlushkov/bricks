@@ -13,14 +13,9 @@ import ru.briks.dao.SetDao;
 import ru.briks.entity.InventoryPart;
 import ru.briks.entity.Minifig;
 import ru.briks.entity.Set;
+import ru.briks.utils.ImageUtils;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.StandardCopyOption;
 
 /**
  * @author EGlushkov
@@ -49,7 +44,7 @@ public class DownloadService {
         }
 
         for (Minifig minifig : minifigPage.getContent()) {
-            String relFileName = downloadImg(basePath, minifig.getOuterImgUrl());
+            String relFileName = ImageUtils.downloadImgAndWrightToDisk(basePath, minifig.getOuterImgUrl());
 
             if (StringUtils.hasText(relFileName)) {
                 minifig.setImgPath(relFileName);
@@ -70,7 +65,7 @@ public class DownloadService {
         }
 
         for (Set set : setsPage.getContent()) {
-            String relFileName = downloadImg(basePath + "\\sets", set.getOuterImgUrl());
+            String relFileName = ImageUtils.downloadImgAndWrightToDisk(basePath + "\\sets", set.getOuterImgUrl());
 
             if (StringUtils.hasText(relFileName)) {
                 set.setImgPath(relFileName);
@@ -91,7 +86,7 @@ public class DownloadService {
         }
 
         for (InventoryPart invPart : setsPage.getContent()) {
-            String relFileName = downloadImg(basePath + "\\invParts", invPart.getOuterImgUrl());
+            String relFileName = ImageUtils.downloadImgAndWrightToDisk(basePath + "\\invParts", invPart.getOuterImgUrl());
 
             if (StringUtils.hasText(relFileName)) {
                 invPart.setImgPath(relFileName);
@@ -100,45 +95,5 @@ public class DownloadService {
         }
 
         return false;
-    }
-
-    @Transactional
-    public String downloadImg(String basePath, String imgUrl) throws IOException {
-
-        if (imgUrl == null) {
-            return null;
-        }
-
-        String path = imgUrl.replace("https://", "").replace("http://", "");
-        String[] imgUrlArr = path.split("/");
-        StringBuilder relFileName = new StringBuilder();
-
-        for (int j = 1; j < imgUrlArr.length; j++) {
-            relFileName.append("\\")
-                    .append(imgUrlArr[j]);
-        }
-
-        String fileName = basePath + relFileName;
-        File file = new File(fileName);
-
-        if (!file.getParentFile().exists()) {
-            file.getParentFile().mkdirs();
-        }
-
-        InputStream in = null;
-
-        try {
-            in = new URL(imgUrl).openStream();
-            Files.copy(in, file.toPath(), StandardCopyOption.REPLACE_EXISTING);
-            in.close();
-        } catch (FileNotFoundException ex) {
-            log.error("File Not Found: %s".formatted(imgUrl), ex);
-            if(in != null) {
-                in.close();
-            }
-            return null;
-        }
-
-        return relFileName.toString();
     }
 }
