@@ -1,11 +1,14 @@
 package ru.briks.dao;
 
 
+import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.jpa.JPQLQueryFactory;
 import jakarta.persistence.EntityManager;
 import org.springframework.stereotype.Repository;
 import ru.briks.entity.PartCategory;
 import ru.briks.entity.QPartCategory;
+
+import java.util.List;
 
 /**
  * @author EGlushkov
@@ -23,5 +26,10 @@ public class PartCategoryDao extends AbstractDao<PartCategory, Long> {
 
     public PartCategoryDao(EntityManager em, JPQLQueryFactory queryFactory) {
         super(PartCategory.class, em, queryFactory);
+    }
+
+    public List<PartCategory> findAllSortedByName() {
+        OrderSpecifier<String> categoryOrder = QPartCategory.partCategory.name.asc();
+        return findAll(categoryOrder);
     }
 }

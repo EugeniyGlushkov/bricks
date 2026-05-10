@@ -92,6 +92,7 @@ dependencies {
     implementation "org.springframework.boot:spring-boot-starter-security"
     implementation "org.springframework.boot:spring-boot-starter-validation"
     implementation "org.springframework.boot:spring-boot-starter-liquibase"
+    implementation "org.springframework.boot:spring-boot-starter-cache"
     implementation "com.google.guava:guava:$guavaVersion"
     compileOnly "org.projectlombok:lombok:$lombokVersion"
     implementation 'junit:junit'
@@ -103,6 +104,7 @@ dependencies {
     implementation "com.querydsl:querydsl-core:$querydslCoreVersion"
     implementation "org.thymeleaf.extras:thymeleaf-extras-springsecurity6"
     implementation "org.apache.poi:poi-ooxml:5.2.5"
+    implementation "com.github.ben-manes.caffeine:caffeine"
     runtimeOnly("org.postgresql:postgresql")
     annotationProcessor(
             "org.springframework.boot:spring-boot-starter-data-jpa",

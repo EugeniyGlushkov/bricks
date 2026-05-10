@@ -46,6 +46,11 @@ spring:
   mvc:
     static-path-pattern: /static/**  # ← Статика только по этому пути
 
+  cache:
+    type: caffeine
+    caffeine:
+      spec: maximumSize=100,expireAfterWrite=24h
+
   liquibase:
     enabled: true
     change-log: classpath:db/changelog/db.changelog-master.yaml
@@ -57,3 +62,4 @@ logging:
     org.hibernate.SQL: DEBUG
     org.hibernate.type.descriptor.sql.BasicBinder: TRACE
     liquibase: INFO
+    #org.springframework.cache: DEBUG

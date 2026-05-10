@@ -2,6 +2,8 @@ package ru.briks.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import ru.briks.dao.PartCategoryDao;
 import ru.briks.entity.PartCategory;
@@ -20,7 +22,18 @@ public class PartCategoryService {
     @Autowired
     private PartCategoryDao partCategoryDao;
 
-    public List<PartCategory> getAll() {
-        return partCategoryDao.findAll();
+    @Cacheable("categories_sorted")
+    public List<PartCategory> getAllSortedByName() {
+        return partCategoryDao.findAllSortedByName();
+    }
+
+    @CacheEvict(value = "categories_sorted", allEntries = true)
+    public PartCategory save(PartCategory category) {
+        return partCategoryDao.save(category);
+    }
+
+    @CacheEvict(value = "categories_sorted", allEntries = true)
+    public void delete(Long id) {
+        partCategoryDao.deleteById(id);
     }
 }

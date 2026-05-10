@@ -178,7 +178,7 @@ public class AdminController {
 
     @GetMapping("/reports")
     public String reportsPage(Model model) {
-        model.addAttribute("categories", partCategoryService.getAll()); // Вернёт List<Category>
+        model.addAttribute("categories", partCategoryService.getAllSortedByName()); // Вернёт List<Category>
         model.addAttribute("states", State.values());
         return "admin/reports";
     }
