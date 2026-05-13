@@ -17,6 +17,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ru.briks.dto.ElementInfoFormDto;
 import ru.briks.dto.ElementOfferDto;
 import ru.briks.dto.PartAdminDto;
+import ru.briks.dto.PartOffersViewModel;
+import ru.briks.entity.Part;
 import ru.briks.entity.State;
 import ru.briks.service.ElementInfoService;
 import ru.briks.service.ElementService;
@@ -24,6 +26,7 @@ import ru.briks.service.PartCategoryService;
 import ru.briks.service.PartService;
 
 import java.util.EnumSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -68,7 +71,7 @@ public class AdminController {
             Model model) {
 
         var pageable = PageRequest.of(page, size, Sort.by("partNum").ascending());
-        Page<PartAdminDto> parts = partService.findPartsForAdmin(search, pageable);
+        Page<PartAdminDto> parts = partService.getPartsForAdmin(search, pageable);
 
         model.addAttribute("parts", parts);
         model.addAttribute("search", search);
@@ -90,15 +93,20 @@ public class AdminController {
 
         var pageable = PageRequest.of(page, size, Sort.by("colorName", "state").ascending());
         Page<ElementOfferDto> offers = elementService.findOffersByPart(partId, state, inStock, pageable);
+        Part part = partService.getById(partId);
+        List<PartAdminDto> analogParts = partService.getAnalogsById(partId);
+        PartOffersViewModel viewModel = PartOffersViewModel.of(
+                part.getPartNum(),
+                part.getPartNumBricklink(),
+                offers,
+                analogParts
+        );
 
         model.addAttribute("partId", partId);
-        model.addAttribute("offers", offers);
+        model.addAttribute("viewModel", viewModel);
         model.addAttribute("states", State.values());
         model.addAttribute("selectedState", state);
         model.addAttribute("inStock", inStock);
-        model.addAttribute("currentPage", page);
-        model.addAttribute("totalPages", offers.getTotalPages());
-        model.addAttribute("pageSize", size);
 
         return "admin/part-offers";
     }

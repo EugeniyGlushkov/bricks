@@ -9,6 +9,9 @@ import ru.briks.dao.PartDao;
 import ru.briks.dto.PartAdminDto;
 import ru.briks.entity.Part;
 import ru.briks.entity.QPart;
+import ru.briks.exceptions.NotFoundException;
+
+import java.util.List;
 
 /**
  * @author EGlushkov
@@ -19,16 +22,22 @@ import ru.briks.entity.QPart;
 @Service
 @Transactional(readOnly = true)
 public class PartService {
-    private PartDao partDao;
+    private final PartDao partDao;
     private static final QPart meta = QPart.part;
 
     public PartService(PartDao partDao) { this.partDao = partDao; }
+
+    public Part getById(Long id) {
+        return partDao
+                .findById(id)
+                .orElseThrow(() -> new NotFoundException("There is no part with id: %d".formatted(id)));
+    }
 
     public Page<Part> getParts(int pageNum, int size) {
         return partDao.findAll(pageNum, size);
     }
 
-    public Page<PartAdminDto> findPartsForAdmin(String search, Pageable pageable) {
+    public Page<PartAdminDto> getPartsForAdmin(String search, Pageable pageable) {
         BooleanBuilder builder = new BooleanBuilder();
 
         if (search != null && !search.isBlank()) {
@@ -38,5 +47,9 @@ public class PartService {
         }
 
         return partDao.findPartsForAdmin(builder, pageable);
+    }
+
+    public List<PartAdminDto> getAnalogsById(Long id) {
+        return partDao.findAnalogsById(id);
     }
 }

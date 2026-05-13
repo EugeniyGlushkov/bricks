@@ -2,6 +2,7 @@ package ru.briks.dao;
 
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.JPQLQueryFactory;
 import jakarta.persistence.EntityManager;
 import org.springframework.data.domain.Page;
@@ -14,6 +15,8 @@ import ru.briks.entity.Part;
 import ru.briks.entity.QInventoryPart;
 import ru.briks.entity.QPart;
 
+import java.util.List;
+
 /**
  * @author EGlushkov
  * Date: 06.04.2026
@@ -21,7 +24,7 @@ import ru.briks.entity.QPart;
  */
 
 @Repository
-public class PartDao extends AbstractDao<Part,Long> {
+public class PartDao extends AbstractDao<Part, Long> {
     private static final QPart meta;
     private static final QInventoryPart IP = QInventoryPart.inventoryPart;
 
@@ -48,6 +51,7 @@ public class PartDao extends AbstractDao<Part,Long> {
                 .select(Projections.constructor(PartAdminDto.class,
                         meta.id,
                         meta.partNum,
+                        meta.partNumBricklink,
                         meta.name,
                         meta.partCategory.id,  // ← Идём через @ManyToOne связь
                         IP.outerImgUrl.min()
@@ -73,5 +77,22 @@ public class PartDao extends AbstractDao<Part,Long> {
                 pageable,
                 () -> countQuery.fetchOne()
         );
+    }
+
+    public List<PartAdminDto> findAnalogsById(Long id) {
+        QPart partAnalog = new QPart("analog");
+        return query()
+                .select(Projections.constructor(PartAdminDto.class,
+                        partAnalog.id,
+                        partAnalog.partNum,
+                        Expressions.nullExpression(String.class),
+                        Expressions.nullExpression(String.class),
+                        Expressions.nullExpression(Long.class),
+                        Expressions.nullExpression(String.class)))
+                .from(meta)
+                .join(partAnalog).on(partAnalog.partNumBricklink.eq(meta.partNumBricklink))
+                .where(meta.id.eq(id).and(meta.id.ne(partAnalog.id)))
+                .distinct()
+                .fetch();
     }
 }

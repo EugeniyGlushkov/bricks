@@ -14,7 +14,8 @@
         <div class="user-info d-flex align-items-center gap-3 text-secondary" sec:authorize="isAuthenticated()">
             <span>👤 <span sec:authentication="name"></span></span>
             <form th:action="@{/logout}" method="post" class="d-inline">
-                <button type="submit" class="btn btn-link p-0 text-primary fw-medium text-decoration-none">Выйти</button>
+                <button type="submit" class="btn btn-link p-0 text-primary fw-medium text-decoration-none">Выйти
+                </button>
             </form>
         </div>
     </header>
@@ -28,10 +29,32 @@
         </div>
 
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h1 class="mb-0">
-                Предложения для детали
-                <a th:href="@{/admin/parts}" class="fs-6 text-secondary text-decoration-none ms-3">« Назад к списку</a>
-            </h1>
+            <div>
+                <div class="d-flex flex-wrap align-items-baseline gap-3 mb-2">
+                    <h1 class="fs-4 mb-0">Предложения для детали</h1>
+
+                    <div th:if="${not #lists.isEmpty(viewModel.analogParts)}" class="fs-6 text-secondary">
+                        💡 Деталь может быть заменена следующими деталями:
+                        <span th:each="analog, iterStat : ${viewModel.analogParts}">
+                            <a th:href="@{/admin/parts/{id}/offers(id=${analog.id})}"
+                               class="text-primary text-decoration-none fw-medium"
+                               th:text="${analog.partNum}">PartNum</a>
+                            <span th:if="${!iterStat.last}">, </span>
+                        </span>
+                    </div>
+
+                    <a th:href="@{/admin/parts}" class="text-secondary text-decoration-none small ms-auto">« Назад к списку</a>
+                </div>
+
+                <div class="mt-2">
+                    <h2 class="h4 mb-1" th:text="${viewModel.partNum}">3001</h2>
+                    <small class="text-muted d-block"
+                           th:if="${viewModel.partNumBricklink != null}"
+                           th:text="'BrickLink № ' + ${viewModel.partNumBricklink}">
+                        BrickLink № ...
+                    </small>
+                </div>
+            </div>
         </div>
 
         <!-- Фильтры -->
@@ -77,7 +100,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="offer : ${offers.content}">
+                <tr th:each="offer : ${viewModel.offers.content}">
                     <td>
                         <img th:if="${offer.imageUrl}" th:src="${offer.imageUrl}" class="thumb thumb-lg" alt="img">
                         <span th:unless="${offer.imageUrl}" class="text-muted">—</span>
@@ -86,7 +109,8 @@
                         <strong th:text="${offer.partNum}">partNum</strong><br>
                         <small th:text="${offer.partName}" class="text-secondary d-block mt-1">partName</small>
                         <div th:if="${not #lists.isEmpty(offer.externalIds())}" class="external-ids">
-                            <span th:each="extId : ${offer.externalIds()}" class="external-id" th:text="${extId}">EXT_ID</span>
+                            <span th:each="extId : ${offer.externalIds()}" class="external-id"
+                                  th:text="${extId}">EXT_ID</span>
                         </div>
                     </td>
                     <td>
@@ -105,11 +129,11 @@
                             <!-- Редактировать -->
                             <a th:if="${offer.infoId}"
                                th:href="@{/admin/offers/{id}/edit(id=${offer.infoId})}"
-                               class="action-btn edit" title="Редактировать">✏️</a>
+                               class="action-btn edit text-decoration-none" title="Редактировать">✏️</a>
 
                             <!-- Добавить состояние -->
                             <a th:href="@{/admin/offers/new(elementId=${offer.elementId}, partId=${partId})}"
-                               class="action-btn add" title="Добавить состояние">➕</a>
+                               class="action-btn add text-decoration-none" title="Добавить состояние">➕</a>
 
                             <!-- Удалить -->
                             <form th:if="${offer.infoId}"
@@ -124,67 +148,70 @@
                         </div>
                     </td>
                 </tr>
-                <tr th:if="${offers.empty}">
+                <tr th:if="${viewModel.offers.isEmpty()}">
                     <td colspan="8" class="empty-state">Предложений не найдено</td>
                 </tr>
                 </tbody>
             </table>
         </div>
 
-        <!-- Пагинация -->
-        <div th:if="${totalPages > 1}" class="d-flex justify-content-between align-items-center mt-3">
+        <!-- Пагинация (использует методы Page: number, totalPages, size) -->
+        <div th:if="${viewModel.offers.totalPages > 1}" class="d-flex justify-content-between align-items-center mt-3">
             <nav>
                 <ul class="pagination pagination-sm mb-0">
                     <!-- « Назад -->
-                    <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
+                    <li class="page-item" th:classappend="${viewModel.offers.number == 0} ? 'disabled'">
                         <a class="page-link"
-                           th:href="@{/admin/parts/{id}/offers(id=${partId}, state=${selectedState}, inStock=${inStock}, page=${currentPage - 1}, size=${pageSize})}">«</a>
+                           th:href="@{/admin/parts/{id}/offers(id=${partId}, state=${selectedState}, inStock=${inStock}, page=${viewModel.offers.number - 1}, size=${viewModel.offers.size})}">«</a>
                     </li>
 
                     <!-- 1 -->
-                    <li class="page-item" th:classappend="${currentPage == 0} ? 'active'">
-                        <a class="page-link" th:if="${currentPage != 0}"
-                           th:href="@{/admin/parts/{id}/offers(id=${partId}, state=${selectedState}, inStock=${inStock}, page=0, size=${pageSize})}">1</a>
-                        <span class="page-link" th:if="${currentPage == 0}">1</span>
+                    <li class="page-item" th:classappend="${viewModel.offers.number == 0} ? 'active'">
+                        <a class="page-link" th:if="${viewModel.offers.number != 0}"
+                           th:href="@{/admin/parts/{id}/offers(id=${partId}, state=${selectedState}, inStock=${inStock}, page=0, size=${viewModel.offers.size})}">1</a>
+                        <span class="page-link" th:if="${viewModel.offers.number == 0}">1</span>
                     </li>
 
                     <!-- ... перед центром -->
-                    <li class="page-item disabled" th:if="${currentPage > 2}">
+                    <li class="page-item disabled" th:if="${viewModel.offers.number > 2}">
                         <span class="page-link">…</span>
                     </li>
 
                     <!-- Центр (current ± 2) -->
                     <li th:each="i : ${#numbers.sequence(
-                currentPage > 2 ? currentPage - 2 : 1,
-                currentPage < totalPages - 3 ? currentPage + 2 : totalPages - 2
-            )}" class="page-item" th:classappend="${i == currentPage} ? 'active'">
-                        <a class="page-link" th:if="${i != currentPage}"
-                           th:href="@{/admin/parts/{id}/offers(id=${partId}, state=${selectedState}, inStock=${inStock}, page=${i}, size=${pageSize})}">[[${i + 1}]]</a>
-                        <span class="page-link" th:if="${i == currentPage}">[[${i + 1}]]</span>
+                        viewModel.offers.number > 2 ? viewModel.offers.number - 2 : 1,
+                        viewModel.offers.number < viewModel.offers.totalPages - 3 ? viewModel.offers.number + 2 : viewModel.offers.totalPages - 2
+                    )}" class="page-item" th:classappend="${i == viewModel.offers.number} ? 'active'">
+                        <a class="page-link" th:if="${i != viewModel.offers.number}"
+                           th:href="@{/admin/parts/{id}/offers(id=${partId}, state=${selectedState}, inStock=${inStock}, page=${i}, size=${viewModel.offers.size})}">[[${i
+                            + 1}]]</a>
+                        <span class="page-link" th:if="${i == viewModel.offers.number}">[[${i + 1}]]</span>
                     </li>
 
                     <!-- ... после центра -->
-                    <li class="page-item disabled" th:if="${currentPage < totalPages - 3}">
+                    <li class="page-item disabled" th:if="${viewModel.offers.number < viewModel.offers.totalPages - 3}">
                         <span class="page-link">…</span>
                     </li>
 
                     <!-- Последняя страница -->
-                    <li class="page-item" th:unless="${totalPages <= 1}"
-                        th:classappend="${currentPage == totalPages - 1} ? 'active'">
-                        <a class="page-link" th:if="${currentPage != totalPages - 1}"
-                           th:href="@{/admin/parts/{id}/offers(id=${partId}, state=${selectedState}, inStock=${inStock}, page=${totalPages - 1}, size=${pageSize})}">[[${totalPages}]]</a>
-                        <span class="page-link" th:if="${currentPage == totalPages - 1}">[[${totalPages}]]</span>
+                    <li class="page-item" th:unless="${viewModel.offers.totalPages <= 1}"
+                        th:classappend="${viewModel.offers.number == viewModel.offers.totalPages - 1} ? 'active'">
+                        <a class="page-link" th:if="${viewModel.offers.number != viewModel.offers.totalPages - 1}"
+                           th:href="@{/admin/parts/{id}/offers(id=${partId}, state=${selectedState}, inStock=${inStock}, page=${viewModel.offers.totalPages - 1}, size=${viewModel.offers.size})}">[[${viewModel.offers.totalPages}]]</a>
+                        <span class="page-link" th:if="${viewModel.offers.number == viewModel.offers.totalPages - 1}">[[${viewModel.offers.totalPages}]]</span>
                     </li>
 
                     <!-- Вперёд » -->
-                    <li class="page-item" th:classappend="${currentPage >= totalPages - 1} ? 'disabled'">
+                    <li class="page-item"
+                        th:classappend="${viewModel.offers.number >= viewModel.offers.totalPages - 1} ? 'disabled'">
                         <a class="page-link"
-                           th:href="@{/admin/parts/{id}/offers(id=${partId}, state=${selectedState}, inStock=${inStock}, page=${currentPage + 1}, size=${pageSize})}">»</a>
+                           th:href="@{/admin/parts/{id}/offers(id=${partId}, state=${selectedState}, inStock=${inStock}, page=${viewModel.offers.number + 1}, size=${viewModel.offers.size})}">»</a>
                     </li>
                 </ul>
             </nav>
             <small class="text-secondary">
-                Страница [[${currentPage + 1}]] из [[${totalPages}]] | Всего: [[${offers.totalElements}]]
+                Страница [[${viewModel.offers.number + 1}]] из [[${viewModel.offers.totalPages}]] | Всего:
+                [[${viewModel.offers.totalElements}]]
             </small>
         </div>
     </main>

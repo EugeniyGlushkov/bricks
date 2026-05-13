@@ -57,7 +57,10 @@
                     </td>
                     <td>
                         <a th:href="@{/admin/parts/{id}/offers(id=${part.id})}"
-                           th:text="${part.partNum}" class="fw-medium">partNum</a>
+                           th:text="${part.partNum}" class="fw-medium d-block text-decoration-none">partNum</a>
+                        <small class="text-muted d-block mt-1"
+                               th:if="${part.partNumBricklink != null}"
+                               th:text="'(BrickLink № ' + ${part.partNumBricklink} + ')'">(BrickLink № ...)</small>
                     </td>
                     <td th:text="${part.name} ?: '—'" class="text-secondary">name</td>
                     <td th:text="${part.categoryId} ?: '—'">catId</td>
