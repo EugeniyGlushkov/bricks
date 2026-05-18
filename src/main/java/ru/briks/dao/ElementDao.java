@@ -6,6 +6,7 @@ import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.JPQLQueryFactory;
 import jakarta.persistence.EntityManager;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.support.PageableExecutionUtils;
@@ -190,6 +191,27 @@ public class ElementDao extends AbstractDao<Element, Long> {
                         EI.price.asc().nullsLast(), // nullsLast защищает от "всплытия" записей без цены
                         EI.state.asc()
                 )
+                .fetch();
+    }
+
+    public List<Element> findAllByBricklinkNum(String num) {
+        if (StringUtils.isBlank(num)) {
+            return Collections.emptyList();
+        }
+
+        QPart part = QPart.part;
+
+        return query().select(meta)
+                .from(meta)
+                .join(meta.part, part)
+                .where(part.partNumBricklink.eq(num))
+                .fetch();
+    }
+
+    public List<Element> findAllByPartNum(String partNum) {
+        return query().select(meta)
+                .from(meta)
+                .where(meta.part.partNum.eq(partNum))
                 .fetch();
     }
 }

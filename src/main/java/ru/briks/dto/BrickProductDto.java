@@ -25,4 +25,6 @@ public class BrickProductDto {
     private String price;
     @JsonProperty("manufacturer")
     private String manufacturer;
+    @JsonProperty("color_en")
+    private String colorEn;
 }

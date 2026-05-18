@@ -4,7 +4,18 @@ urls:
 download:
   variants:
     bricks:
+      #- variantOf: 553 # Brick, Round 2 x 2 Dome Top (Undetermined Stud and Bottom Type)
+      #  variantType: BASIS_REAL
+      #- variantOf: 2356 # Brick 4 x 6
+      #  variantType: BASIS_REAL
       #- variantOf: 2357 # Brick 2 x 2 Corner
       #  variantType: BASIS_REAL
-      - variantOf: 2356 # Brick 4 x 6
+      #- variantOf: 2453a # Brick 1 x 1 x 5 - Blocked Open Stud or Hollow Stud
+      #  variantType: BASIS_REAL
+      #- variantOf: 2453b # Brick 1 x 1 x 5 - Solid Stud
+      #  variantType: BASIS_REAL
+      - variantOf: 2454 # Brick 1 x 2 x 5 - Blocked Open Studs or Hollow Studs
         variantType: BASIS_REAL
+
+#not scanned
+# 553 decorated
