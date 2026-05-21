@@ -14,8 +14,17 @@ download:
       #  variantType: BASIS_REAL
       #- variantOf: 2453b # Brick 1 x 1 x 5 - Solid Stud
       #  variantType: BASIS_REAL
-      - variantOf: 2454 # Brick 1 x 2 x 5 - Blocked Open Studs or Hollow Studs
+      #- variantOf: 2454 # Brick 1 x 2 x 5 - Blocked Open Studs or Hollow Studs
+      #  variantType: BASIS_REAL
+      #- variantOf: 2456 # Brick 2 x 6
+      #  variantType: BASIS_REAL
+      - variantOf: 2458 # Brick, Modified 1 x 2 with Pin
         variantType: BASIS_REAL
 
 #not scanned
 # 553 decorated
+# 2357 decorated
+# 2453b decorated
+# 2454 decorated
+# 2456 decorated
+# 2458 decorated
