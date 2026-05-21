@@ -18,7 +18,41 @@ download:
       #  variantType: BASIS_REAL
       #- variantOf: 2456 # Brick 2 x 6
       #  variantType: BASIS_REAL
-      - variantOf: 2458 # Brick, Modified 1 x 2 with Pin
+      #- variantOf: 2458 # Brick, Modified 1 x 2 with Pin
+      #  variantType: BASIS_REAL
+      #- variantOf: 2462 # Brick, Modified Facet 3 x 3
+      #  variantType: BASIS_REAL
+      #- variantOf: 2465 # Brick 1 x 16
+      #  variantType: BASIS_REAL
+      #- variantOf: 2577 # Brick, Round Corner 4 x 4 Full Brick
+      #  variantType: BASIS_REAL
+      #- variantOf: 2653
+      #  variantType: BASIS_REAL
+      #- variantOf: 2730
+      #  variantType: BASIS_REAL
+      #- variantOf: 2877
+      #  variantType: BASIS_REAL
+      #- variantOf: 2921
+      #  variantType: BASIS_REAL
+      #- variantOf: 3001
+      #  variantType: BASIS_REAL
+      #- variantOf: 3002
+      #  variantType: BASIS_REAL
+      #- variantOf: 3003
+      #  variantType: BASIS_REAL
+      #- variantOf: 3004
+      #  variantType: BASIS_REAL
+      #- variantOf: 3006
+      #  variantType: BASIS_REAL
+      #- variantOf: 3007
+      #  variantType: BASIS_REAL
+      #- variantOf: 3008
+      #  variantType: BASIS_REAL
+      #- variantOf: 3009
+      #  variantType: BASIS_REAL
+      - variantOf: 3010
+        variantType: BASIS_REAL
+      - variantOf: 3062
         variantType: BASIS_REAL
 
 #not scanned
@@ -28,3 +62,13 @@ download:
 # 2454 decorated
 # 2456 decorated
 # 2458 decorated
+# 2462 decorated
+# 2465 decorated
+# 3001 decorated
+# 3002 decorated
+# 3003 decorated
+# 3005 decorated
+# 3006 decorated
+# 3007 decorated
+# 3009 decorated
+# 3010 decorated

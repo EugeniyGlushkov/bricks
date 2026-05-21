@@ -82,7 +82,7 @@ public class ElementInfoPriceService {
                                     .element(elementIdToElements.get(prod.getModel()))
                                     .state(State.ofCode(prod.getManufacturer()))
                                     .build())
-                            .setPriceKuboka(BigDecimal.valueOf(Double.parseDouble(prod.getPrice())))
+                            .setPriceKuboka(BigDecimal.valueOf(Double.parseDouble(prod.getPrice().replace(" ", ""))))
                             .setPriceKubokaUpdated(LocalDateTime.now()))
                     .toList();
             elementInfoDao.saveAll(elementInfos);
