@@ -92,7 +92,7 @@ public class AdminController {
             Model model) {
 
         var pageable = PageRequest.of(page, size, Sort.by("colorName", "state").ascending());
-        Page<ElementOfferDto> offers = elementService.findOffersByPart(partId, state, inStock, pageable);
+        Page<ElementOfferDto> offers = elementService.getOffersByPart(partId, state, inStock, pageable);
         Part part = partService.getById(partId);
         List<PartAdminDto> analogParts = partService.getAnalogsById(partId);
         PartOffersViewModel viewModel = PartOffersViewModel.of(

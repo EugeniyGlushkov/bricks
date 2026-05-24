@@ -29,7 +29,7 @@ public class ElementService {
         this.filterService = filterService;
     }
 
-    public Page<ElementOfferDto> findOffersByPart(
+    public Page<ElementOfferDto> getOffersByPart(
             Long partId, State state, Boolean inStock, Pageable pageable) {
 
         var predicate = filterService.buildPredicate(

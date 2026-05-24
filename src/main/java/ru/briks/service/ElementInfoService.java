@@ -35,7 +35,7 @@ public class ElementInfoService {
     }
 
     @Transactional(readOnly = true)
-    public Optional<ElementInfo> findByElementIdAndState(Long elementId, State state) {
+    public Optional<ElementInfo> getByElementIdAndState(Long elementId, State state) {
         return elementInfoDao.findByElementIdAndState(elementId, state);
     }
 

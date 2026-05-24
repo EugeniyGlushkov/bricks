@@ -6,10 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.briks.dao.ElementDao;
 import ru.briks.dao.ElementExternalIdDao;
 import ru.briks.dao.ElementInfoDao;
-import ru.briks.dao.ElementDao;
-import ru.briks.dao.PartDao;
 import ru.briks.dto.BrickProductDto;
 import ru.briks.dto.VariantDto;
 import ru.briks.entity.Element;
@@ -48,157 +47,151 @@ public class ElementInfoPriceService {
     private ElementInfoDao elementInfoDao;
     @Autowired
     private ElementExternalIdDao elementExternalIdDao;
-    @Autowired
-    private PartDao partDao;
 
     @Transactional
-    public void downloadPrices(VariantDto variant) throws InterruptedException {
-        List<BrickProductDto> products = webDataService
-                .getData(detailsUrl, variant.getVariantOf(), variant.getVariantType())
-                .getProducts()
-                .stream()
-                .peek((product) ->
-                        product.setPrice(product.getPrice().replace("р.", "").trim()))
-                .toList();
-
-        List<String> models = products.stream()
-                .map(BrickProductDto::getModel)
-                .filter(StringUtils::isNotBlank)
-                .toList();
-
-        Map<String, Element> elementIdToElements =
-                elementExternalIdDao.findAllByExternalIds(models).stream()
-                        .collect(Collectors.toMap(ElementExternalId::getExternalId, ElementExternalId::getElement));
-
-        LocalDateTime startUpdating = LocalDateTime.now();
-
-        if (!elementIdToElements.isEmpty()) {
-            List<ElementInfo> elementInfos = products.stream()
-                    .filter(prod -> elementIdToElements.containsKey(prod.getModel()))
-                    .map(prod -> elementInfoDao.findByElementIdAndState(
-                                    elementIdToElements.get(prod.getModel()).getId(),
-                                    State.ofCode(prod.getManufacturer()))
-                            .orElse(ElementInfo.builder()
-                                    .element(elementIdToElements.get(prod.getModel()))
-                                    .state(State.ofCode(prod.getManufacturer()))
-                                    .build())
-                            .setPriceKuboka(BigDecimal.valueOf(Double.parseDouble(prod.getPrice().replace(" ", ""))))
-                            .setPriceKubokaUpdated(LocalDateTime.now()))
+    public void downloadPrices(VariantDto variant) {
+        try {
+            List<BrickProductDto> products = webDataService
+                    .getData(detailsUrl, variant.getVariantOf(), variant.getVariantType())
+                    .getProducts()
+                    .stream()
+                    .peek((product) ->
+                            product.setPrice(product.getPrice().replace("р.", "").trim()))
                     .toList();
-            elementInfoDao.saveAll(elementInfos);
-        }
 
-        Map<String, List<Element>> colorNameToElements = elementDao.findAllByPartNum(variant.getVariantOf())
-                .stream()
-                .collect(Collectors.toMap(el -> el.getColor().getName(),
-                        el -> new ArrayList<>(List.of(el)),
-                        (oldVal, newVal) -> {
-                            oldVal.addAll(newVal);
-                            return oldVal;
-                        }));
+            List<String> models = products.stream()
+                    .map(BrickProductDto::getModel)
+                    .filter(StringUtils::isNotBlank)
+                    .toList();
 
-        if (!colorNameToElements.isEmpty()) {
-            Map<String, List<Element>> finalColorNameToElements = colorNameToElements;
-            List<ElementInfo> elementInfos = new ArrayList<>();
+            Map<String, Element> elementIdToElements =
+                    elementExternalIdDao.findAllByExternalIds(models).stream()
+                            .collect(Collectors.toMap(ElementExternalId::getExternalId, ElementExternalId::getElement));
 
-            for (BrickProductDto prod : products) {
-                if (!finalColorNameToElements.containsKey(prod.getColorEn())) {
-                    continue;
-                }
-                for (Element el : finalColorNameToElements.get(prod.getColorEn())) {
-                    Optional<ElementInfo> elementInfoOpt = elementInfoDao.findByElementIdAndState(
-                            el.getId(),
-                            State.ofCode(prod.getManufacturer()));
-                    if (elementInfoOpt.isEmpty() ||
-                            elementInfoOpt.get().getPriceKubokaUpdated().isBefore(startUpdating)) {
-                        ElementInfo elementInfo = elementInfoOpt
+            LocalDateTime startUpdating = LocalDateTime.now();
+
+            if (!elementIdToElements.isEmpty()) {
+                List<ElementInfo> elementInfos = products.stream()
+                        .filter(prod -> elementIdToElements.containsKey(prod.getModel()))
+                        .map(prod -> elementInfoDao.findByElementIdAndState(
+                                        elementIdToElements.get(prod.getModel()).getId(),
+                                        State.ofCode(prod.getManufacturer()))
                                 .orElse(ElementInfo.builder()
-                                        .element(el)
+                                        .element(elementIdToElements.get(prod.getModel()))
                                         .state(State.ofCode(prod.getManufacturer()))
                                         .build())
-                                .setPriceKuboka(BigDecimal.valueOf(Double.parseDouble(prod.getPrice())))
-                                .setPriceKubokaUpdated(LocalDateTime.now());
-                        elementInfos.add(elementInfo);
-                    }
+                                .setPriceKuboka(BigDecimal.valueOf(Double.parseDouble(prod.getPrice().replace(" ", ""))))
+                                .setPriceKubokaUpdated(LocalDateTime.now()))
+                        .toList();
+
+                if (!elementInfos.isEmpty()) {
+                    elementInfoDao.saveAll(filterElementsWithElementIdAndStateUniqueViolation(elementInfos));
                 }
             }
 
-            /*List<ElementInfo> elementInfos = products.stream()
-                    .filter(prod -> finalColorNameToElements.containsKey(prod.getColorEn()))
-                    .flatMap(prod -> finalColorNameToElements.get(prod.getColorEn()).stream()
-                            .map(el -> {
-                                        Optional<ElementInfo> elementInfo = elementInfoDao.findByElementIdAndState(
-                                                el.getId(),
-                                                State.ofCode(prod.getManufacturer()));
-                                        if (elementInfo.isEmpty() ||
-                                                elementInfo.get().getPriceKubokaUpdated().isBefore(startUpdating)) {
-                                            return elementInfo
-                                                    .orElse(ElementInfo.builder()
-                                                            .element(el)
-                                                            .state(State.ofCode(prod.getManufacturer()))
-                                                            .build())
-                                                    .setPriceKuboka(BigDecimal.valueOf(Double.parseDouble(prod.getPrice())))
-                                                    .setPriceKubokaUpdated(LocalDateTime.now());
-                                        } else {
-                                            return null;
-                                        }
-                                    }
-                            )
-                    )
-                    .toList();*/
-            elementInfoDao.saveAll(elementInfos);
-        }
+            Map<String, List<Element>> colorNameToElements = elementDao.findAllByPartNum(variant.getVariantOf())
+                    .stream()
+                    .collect(Collectors.toMap(el -> el.getColor().getName(),
+                            el -> new ArrayList<>(List.of(el)),
+                            (oldVal, newVal) -> {
+                                oldVal.addAll(newVal);
+                                return oldVal;
+                            }));
 
-        colorNameToElements = elementDao.findAllByBricklinkNum(variant.getVariantOf()).stream()
-                .collect(Collectors.toMap(el -> el.getColor().getName(),
-                        el -> new ArrayList<>(List.of(el)),
-                        (oldVal, newVal) -> {
-                            oldVal.addAll(newVal);
-                            return oldVal;
-                        }));
+            if (!colorNameToElements.isEmpty()) {
+                Map<String, List<Element>> finalColorNameToElements = colorNameToElements;
+                List<ElementInfo> elementInfos = new ArrayList<>();
 
-        if (!colorNameToElements.isEmpty()) {
-            Map<String, List<Element>> finalColorNameToElements = colorNameToElements;
-            List<ElementInfo> elementInfos = new ArrayList<>();
-
-            for (BrickProductDto prod : products) {
-                if (!finalColorNameToElements.containsKey(prod.getColorEn())) {
-                    continue;
-                }
-                for (Element el : finalColorNameToElements.get(prod.getColorEn())) {
-                    Optional<ElementInfo> elementInfoOpt = elementInfoDao.findByElementIdAndState(
-                            el.getId(),
-                            State.ofCode(prod.getManufacturer()));
-                    if (elementInfoOpt.isEmpty() ||
-                            elementInfoOpt.get().getPriceKubokaUpdated().isBefore(startUpdating)) {
-                        ElementInfo elementInfo = elementInfoOpt
-                                .orElse(ElementInfo.builder()
-                                        .element(el)
-                                        .state(State.ofCode(prod.getManufacturer()))
-                                        .build())
-                                .setPriceKuboka(BigDecimal.valueOf(Double.parseDouble(prod.getPrice())))
-                                .setPriceKubokaUpdated(LocalDateTime.now());
-                        elementInfos.add(elementInfo);
+                for (BrickProductDto prod : products) {
+                    if (!finalColorNameToElements.containsKey(prod.getColorEn())) {
+                        continue;
                     }
-                }
-            }
-
-            /*Map<String, List<Element>> finalColorNameToElements = colorNameToElements;
-            List<ElementInfo> elementInfos = products.stream()
-                    .filter(prod -> finalColorNameToElements.containsKey(prod.getColorEn()))
-                    .flatMap(prod -> finalColorNameToElements.get(prod.getColorEn()).stream()
-                            .map(el -> elementInfoDao.findByElementIdAndState(
-                                            el.getId(),
-                                            State.ofCode(prod.getManufacturer()))
+                    for (Element el : finalColorNameToElements.get(prod.getColorEn())) {
+                        Optional<ElementInfo> elementInfoOpt = elementInfoDao.findByElementIdAndState(
+                                el.getId(),
+                                State.ofCode(prod.getManufacturer()));
+                        if (elementInfoOpt.isEmpty() ||
+                                elementInfoOpt.get().getPriceKubokaUpdated().isBefore(startUpdating)) {
+                            ElementInfo elementInfo = elementInfoOpt
                                     .orElse(ElementInfo.builder()
                                             .element(el)
                                             .state(State.ofCode(prod.getManufacturer()))
                                             .build())
                                     .setPriceKuboka(BigDecimal.valueOf(Double.parseDouble(prod.getPrice())))
-                                    .setPriceKubokaUpdated(LocalDateTime.now())))
+                                    .setPriceKubokaUpdated(LocalDateTime.now());
+                            elementInfos.add(elementInfo);
+                        }
+                    }
+                }
 
-                    .toList();*/
-            elementInfoDao.saveAll(elementInfos);
+                if (!elementInfos.isEmpty()) {
+                    elementInfoDao.saveAll(elementInfos);
+                }
+            }
+
+            colorNameToElements = elementDao.findAllByBricklinkNum(variant.getVariantOf()).stream()
+                    .collect(Collectors.toMap(el -> el.getColor().getName(),
+                            el -> new ArrayList<>(List.of(el)),
+                            (oldVal, newVal) -> {
+                                oldVal.addAll(newVal);
+                                return oldVal;
+                            }));
+
+            if (!colorNameToElements.isEmpty()) {
+                Map<String, List<Element>> finalColorNameToElements = colorNameToElements;
+                List<ElementInfo> elementInfos = new ArrayList<>();
+
+                for (BrickProductDto prod : products) {
+                    if (!finalColorNameToElements.containsKey(prod.getColorEn())) {
+                        continue;
+                    }
+                    for (Element el : finalColorNameToElements.get(prod.getColorEn())) {
+                        Optional<ElementInfo> elementInfoOpt = elementInfoDao.findByElementIdAndState(
+                                el.getId(),
+                                State.ofCode(prod.getManufacturer()));
+                        if (elementInfoOpt.isEmpty() ||
+                                elementInfoOpt.get().getPriceKubokaUpdated().isBefore(startUpdating)) {
+                            ElementInfo elementInfo = elementInfoOpt
+                                    .orElse(ElementInfo.builder()
+                                            .element(el)
+                                            .state(State.ofCode(prod.getManufacturer()))
+                                            .build())
+                                    .setPriceKuboka(BigDecimal.valueOf(Double.parseDouble(prod.getPrice())))
+                                    .setPriceKubokaUpdated(LocalDateTime.now());
+                            elementInfos.add(elementInfo);
+                        }
+                    }
+                }
+
+                if (!elementInfos.isEmpty()) {
+                    elementInfoDao.saveAll(elementInfos);
+                }
+            }
+        } catch (Exception e) {
+            log.error(e.getMessage());
         }
+    }
+
+    private List<ElementInfo> filterElementsWithElementIdAndStateUniqueViolation(List<ElementInfo> elementInfos) {
+        Map<String, Integer> elementIdAndStateToCount = elementInfos.stream()
+                .collect(Collectors.toMap(
+                                ei -> ei.getElement().getId().toString() + ei.getState(),
+                                ei -> 1,
+                                (o, n) -> o + 1
+                        )
+                );
+
+        List<ElementInfo> filteredElementInfos = new ArrayList<>(elementInfos);
+
+        for (Map.Entry<String, Integer> entry : elementIdAndStateToCount.entrySet()) {
+            if (entry.getValue() > 1) {
+                Long excludedElementId = Long.parseLong(entry.getKey().replace("NEW", "").replace("USED", ""));
+                filteredElementInfos = filteredElementInfos.stream()
+                        .filter(ei -> !ei.getElement().getId().equals(excludedElementId))
+                        .toList();
+            }
+        }
+
+        return filteredElementInfos;
     }
 }
