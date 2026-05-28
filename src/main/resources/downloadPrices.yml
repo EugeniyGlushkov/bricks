@@ -94,18 +94,139 @@ download:
       #  variantType: BASIS_REAL
       #- variantOf: 4202
       #  variantType: BASIS_REAL
-      - variantOf: 4216
+      #- variantOf: 4216
+      #  variantType: BASIS_REAL
+      #- variantOf: 4217
+      #  variantType: BASIS_REAL
+      #- variantOf: 4588
+      #  variantType: BASIS_REAL
+      #- variantOf: 4595
+      #  variantType: BASIS_REAL
+      #- variantOf: 4729
+      #  variantType: BASIS_REAL
+      #- variantOf: 6111
+      #  variantType: BASIS_REAL
+      #- variantOf: 6112
+      #  variantType: BASIS_REAL
+      #- variantOf: 6134
+      #  variantType: BASIS_REAL
+      #- variantOf: 6222
+      #  variantType: BASIS_REAL
+      #- variantOf: 6232
+      #  variantType: BASIS_REAL
+      #- variantOf: 6249
+      #  variantType: BASIS_REAL
+      #- variantOf: 6541
+      #  variantType: BASIS_REAL
+      #- variantOf: 11211
+      #  variantType: BASIS_REAL
+      #- variantOf: 14413
+      #  variantType: BASIS_REAL
+      #- variantOf: 14520
+      #  variantType: BASIS_REAL
+      #- variantOf: 14716
+      #  variantType: BASIS_REAL
+      #- variantOf: 15301c01
+      #  variantType: BASIS_REAL
+      #- variantOf: 15395
+      #  variantType: BASIS_REAL
+      #- variantOf: 15444
+      #  variantType: BASIS_REAL
+      #- variantOf: 16968
+      #  variantType: BASIS_REAL
+      #- variantOf: 17485
+      #  variantType: BASIS_REAL
+      #- variantOf: 18455
+      #  variantType: BASIS_REAL
+      #- variantOf: 18585
+      #  variantType: BASIS_REAL
+      #- variantOf: 18897
+      #  variantType: BASIS_REAL
+      #- variantOf: 18975
+      #  variantType: BASIS_REAL
+      #- variantOf: 20310
+      #  variantType: BASIS_REAL
+      #- variantOf: 20952
+      #  variantType: BASIS_REAL
+      #- variantOf: 22885
+      #  variantType: BASIS_REAL
+      #- variantOf: 24599
+      #  variantType: BASIS_REAL
+      #- variantOf: 24947
+      #  variantType: BASIS_REAL
+      #- variantOf: 25214
+      #  variantType: BASIS_REAL
+      #- variantOf: 26597
+      #  variantType: BASIS_REAL
+      #- variantOf: 26604
+      #  variantType: BASIS_REAL
+      #- variantOf: 30000
+      #  variantType: BASIS_REAL
+      #- variantOf: 30136
+      #  variantType: BASIS_REAL
+      #- variantOf: 30137
+      #  variantType: BASIS_REAL
+      #- variantOf: 30137
+      #  variantType: BASIS_REAL
+      #- variantOf: 30145
+      #  variantType: BASIS_REAL
+      #- variantOf: 30151
+      #  variantType: BASIS_REAL
+      #- variantOf: 30236
+      #  variantType: BASIS_REAL
+      #- variantOf: 30237a
+      #  variantType: BASIS_REAL
+      #- variantOf: 30237b
+      #  variantType: BASIS_REAL
+      #- variantOf: 30359b
+      #  variantType: BASIS_REAL
+      #- variantOf: 30361c
+      #  variantType: BASIS_REAL
+      #- variantOf: 30364
+      #  variantType: BASIS_REAL
+      #- variantOf: 30386
+      #  variantType: BASIS_REAL
+      #- variantOf: 30387
+      #  variantType: BASIS_REAL
+      #- variantOf: 30388
+      #  variantType: BASIS_REAL
+      #- variantOf: 30389b
+      #  variantType: BASIS_REAL
+      #- variantOf: 30389c
+      #  variantType: BASIS_REAL
+      #- variantOf: 30414
+      #  variantType: BASIS_REAL
+      #- variantOf: 30526
+      #  variantType: BASIS_REAL
+      #- variantOf: 30540
+      #  variantType: BASIS_REAL
+      #- variantOf: 30541
+      #  variantType: BASIS_REAL
+      #- variantOf: 30592
+      #  variantType: BASIS_REAL
+      - variantOf: 32000
         variantType: BASIS_REAL
-      - variantOf: 4217
+      - variantOf: 32018
         variantType: BASIS_REAL
-      - variantOf: 4588
+      - variantOf: 32018
         variantType: BASIS_REAL
-      - variantOf: 4595
+      - variantOf: 32064
         variantType: BASIS_REAL
-      - variantOf: 4729
+      - variantOf: 32324
+        variantType: BASIS_REAL
+      - variantOf: 32531
+        variantType: BASIS_REAL
+      - variantOf: 32555
+        variantType: BASIS_REAL
+      - variantOf: 32952
+        variantType: BASIS_REAL
+      - variantOf: 32952
+        variantType: BASIS_REAL
+      - variantOf: 34816
         variantType: BASIS_REAL
 
 #not scanned
+# 14716 decorated
 # 553 decorated
 # 2357 decorated
 # 2453b decorated
@@ -127,3 +248,6 @@ download:
 # 3245c decorated
 # 3622 decorated
 # 3941 decorated
+# 6111 decorated
+# 11211 decorated
+# 17485 decorated
