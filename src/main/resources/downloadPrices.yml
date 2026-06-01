@@ -204,25 +204,51 @@ download:
       #  variantType: BASIS_REAL
       #- variantOf: 30592
       #  variantType: BASIS_REAL
-      - variantOf: 32000
+      #- variantOf: 32000
+      #  variantType: BASIS_REAL
+      #- variantOf: 32018
+      #  variantType: BASIS_REAL
+      #- variantOf: 32018
+      #  variantType: BASIS_REAL
+      #- variantOf: 32064
+      #  variantType: BASIS_REAL
+      #- variantOf: 32324
+      #  variantType: BASIS_REAL
+      #- variantOf: 32531
+      #  variantType: BASIS_REAL
+      #- variantOf: 32555
+      #  variantType: BASIS_REAL
+      #- variantOf: 32952
+      #  variantType: BASIS_REAL
+      #- variantOf: 32952
+      #  variantType: BASIS_REAL
+      #- variantOf: 34816 #downloaded to briks
+      #  variantType: BASIS_REAL
+      - variantOf: 37452
         variantType: BASIS_REAL
-      - variantOf: 32018
+      - variantOf: 39789
         variantType: BASIS_REAL
-      - variantOf: 32018
+      - variantOf: 40902
         variantType: BASIS_REAL
-      - variantOf: 32064
+      - variantOf: 44865
         variantType: BASIS_REAL
-      - variantOf: 32324
+      - variantOf: 47431
         variantType: BASIS_REAL
-      - variantOf: 32531
+      - variantOf: 47855
         variantType: BASIS_REAL
-      - variantOf: 32555
+      - variantOf: 47974
         variantType: BASIS_REAL
-      - variantOf: 32952
+      - variantOf: 47975
         variantType: BASIS_REAL
-      - variantOf: 32952
+      - variantOf: 48092
         variantType: BASIS_REAL
-      - variantOf: 34816
+      - variantOf: 48169
+        variantType: BASIS_REAL
+      - variantOf: 48170
+        variantType: BASIS_REAL
+      - variantOf: 48171
+        variantType: BASIS_REAL
+      - variantOf: 48172
         variantType: BASIS_REAL
 
 #not scanned
