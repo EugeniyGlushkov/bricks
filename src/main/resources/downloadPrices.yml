@@ -222,34 +222,121 @@ download:
       #  variantType: BASIS_REAL
       #- variantOf: 32952
       #  variantType: BASIS_REAL
-      #- variantOf: 34816 #downloaded to briks
+      #- variantOf: 34816
       #  variantType: BASIS_REAL
-      - variantOf: 37452
-        variantType: BASIS_REAL
-      - variantOf: 39789
-        variantType: BASIS_REAL
-      - variantOf: 40902
-        variantType: BASIS_REAL
-      - variantOf: 44865
-        variantType: BASIS_REAL
-      - variantOf: 47431
-        variantType: BASIS_REAL
-      - variantOf: 47855
-        variantType: BASIS_REAL
-      - variantOf: 47974
-        variantType: BASIS_REAL
-      - variantOf: 47975
-        variantType: BASIS_REAL
-      - variantOf: 48092
-        variantType: BASIS_REAL
-      - variantOf: 48169
-        variantType: BASIS_REAL
-      - variantOf: 48170
-        variantType: BASIS_REAL
-      - variantOf: 48171
-        variantType: BASIS_REAL
-      - variantOf: 48172
-        variantType: BASIS_REAL
+      #- variantOf: 37452
+      #  variantType: BASIS_REAL
+      #- variantOf: 39789
+      #  variantType: BASIS_REAL
+      #- variantOf: 40902
+      #  variantType: BASIS_REAL
+      #- variantOf: 44865
+      #  variantType: BASIS_REAL
+      #- variantOf: 47431
+      #  variantType: BASIS_REAL
+      #- variantOf: 47855
+      #  variantType: BASIS_REAL
+      #- variantOf: 47974
+      #  variantType: BASIS_REAL
+      #- variantOf: 47975
+      #  variantType: BASIS_REAL
+      #- variantOf: 48092
+      #  variantType: BASIS_REAL
+      #- variantOf: 48169
+      #  variantType: BASIS_REAL
+      #- variantOf: 48170
+      #  variantType: BASIS_REAL
+      #- variantOf: 48171
+      #  variantType: BASIS_REAL
+      #- variantOf: 48172
+      #  variantType: BASIS_REAL
+      #- variantOf: 49311
+      #  variantType: BASIS_REAL
+      #- variantOf: 49612
+      #  variantType: BASIS_REAL
+      #- variantOf: 52038
+      #  variantType: BASIS_REAL
+      #- variantOf: 52107
+      #  variantType: BASIS_REAL
+      #- variantOf: 58846
+      #  variantType: BASIS_REAL
+      #- variantOf: 60475
+      #  variantType: BASIS_REAL
+      #- variantOf: 60475b
+      #  variantType: BASIS_REAL
+      #- variantOf: 60476
+      #  variantType: BASIS_REAL
+      #- variantOf: 60583a
+      #  variantType: BASIS_REAL
+      #- variantOf: 60583b
+      #  variantType: BASIS_REAL
+      #- variantOf: 65473
+      #  variantType: BASIS_REAL
+      #- variantOf: 65617
+      #  variantType: BASIS_REAL
+      #- variantOf: 65635
+      #  variantType: BASIS_REAL
+      #- variantOf: 66961
+      #  variantType: BASIS_REAL
+      #- variantOf: 67446
+      #  variantType: BASIS_REAL
+      #- variantOf: 67696
+      #  variantType: BASIS_REAL
+      #- variantOf: 67810
+      #  variantType: BASIS_REAL
+      #- variantOf: 68325
+      #  variantType: BASIS_REAL
+      #- variantOf: 71752
+      #  variantType: BASIS_REAL
+      #- variantOf: 73109
+      #  variantType: BASIS_REAL
+      #- variantOf: 73111
+      #  variantType: BASIS_REAL
+      #- variantOf: 76795
+      #  variantType: BASIS_REAL
+      #- variantOf: 77808
+      #  variantType: BASIS_REAL
+      #- variantOf: 80796
+      #  variantType: BASIS_REAL
+      #- variantOf: 84866
+      #  variantType: BASIS_REAL
+      #- variantOf: 85080
+      #  variantType: BASIS_REAL
+      #- variantOf: 87559
+      #  variantType: BASIS_REAL
+      #- variantOf: 87620
+      #  variantType: BASIS_REAL
+      #- variantOf: 88293
+      #  variantType: BASIS_REAL
+      #- variantOf: 88393
+      #  variantType: BASIS_REAL
+      #- variantOf: 92947
+      #  variantType: BASIS_REAL
+      #- variantOf: 95188
+      #  variantType: BASIS_REAL
+      #- variantOf: 98283 #downloaded to briks
+      #  variantType: BASIS_REAL
+    plates:
+      #- variantOf: 2419
+      #  variantType: BASIS_REAL
+      #- variantOf: 2420
+      #  variantType: BASIS_REAL
+      #- variantOf: 2429
+      #  variantType: BASIS_REAL
+      #- variantOf: 2429c01
+      #  variantType: BASIS_REAL
+      #- variantOf: 2430
+      #  variantType: BASIS_REAL
+      #- variantOf: 2444
+      #  variantType: BASIS_REAL
+      #- variantOf: 2445
+      #  variantType: BASIS_REAL
+      #- variantOf: 2450
+      #  variantType: BASIS_REAL
+      #- variantOf: 2476
+      #  variantType: BASIS_REAL
+      #- variantOf: 2508 #downloaded to briks
+      #  variantType: BASIS_REAL
 
 #not scanned
 # 14716 decorated
